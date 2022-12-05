@@ -6,12 +6,12 @@ import java.util.*;
 @SuppressWarnings("unused")
 public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
   private String _ma;
-  private String _ngayLap;
+  private int _ngayLap;
   private NhanVien _nv;
   private KhachHang _kh;
   private ChiTietHoaDon[] _chiTiet;
   private long _tongTien;
-  public HoaDon(String ma, String ngayLap, NhanVien nv, KhachHang kh, ChiTietHoaDon[] chiTiet, long tongTien) {
+  public HoaDon(String ma, int ngayLap, NhanVien nv, KhachHang kh, ChiTietHoaDon[] chiTiet, long tongTien) {
     _ma = ma;
     _ngayLap = ngayLap;
     _nv = nv;
@@ -19,12 +19,17 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
     _chiTiet = chiTiet;
     _tongTien = tongTien;
   }
-  public HoaDon() { this("", "", new NhanVien(), new KhachHang(), new ChiTietHoaDon[0], 0L); }
+  public HoaDon(String ma, String ngayLap, NhanVien nv, KhachHang kh, ChiTietHoaDon[] chiTiet, long tongTien) {
+    this(ma, DateUtil.parseDate(ngayLap), nv, kh, chiTiet, tongTien);
+  }
+  public HoaDon() { this("", DateUtil.DATE_ERROR_DATE, new NhanVien(), new KhachHang(), new ChiTietHoaDon[0], 0L); }
   public HoaDon(HoaDon hd) { this(hd._ma, hd._ngayLap, hd._nv, hd._kh, hd._chiTiet.clone(), hd._tongTien); }
   public String getMa() { return _ma; }
   public void setMa(String ma) { _ma = ma; }
-  public String getNgayLap() { return _ngayLap; }
-  public void setNgayLap(String ngayLap) { _ngayLap = ngayLap; }
+  public int getNgayLap() { return _ngayLap; }
+  public void setNgayLap(int ngayLap) { _ngayLap = ngayLap; }
+  public String getChuoiNgayLap() { return DateUtil.toDateString(_ngayLap); }
+  public void setChuoiNgayLap(String ngayLap) { _ngayLap = DateUtil.parseDate(ngayLap); }
   public NhanVien getNhanVien() { return _nv; }
   public void setNhanVien(NhanVien nv) { _nv = nv; }
   public KhachHang getKhachHang() { return _kh; }
@@ -62,7 +67,7 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
       _ma = in.nextLine();
     }
     System.out.print("Nhập ngày lập: ");
-    _ngayLap = in.nextLine();
+    _ngayLap = DateUtil.parseDate(in.nextLine());
     DanhSachNhanVien dsnv = QuanLyCuaHangMayTinh._dsNhanVien;
     System.out.println("Danh sách nhân viên:");
     dsnv.output();
@@ -112,11 +117,14 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
       ct.input();
       add(ct);
     }
+    _tongTien = 0;
+    for (ChiTietHoaDon cti : _chiTiet)
+      _tongTien += cti.getThanhTien();
   }
   public void output() {
     System.out.println("+----------------------------------- HÓA ĐƠN ----------------------------------+");
     System.out.printf("|  Mã hóa đơn: %s                                                              |\n", _ma);
-    System.out.printf("|  Ngày lập: %s                                                                |\n", _ngayLap);
+    System.out.printf("|  Ngày lập: %s                                                                |\n", getChuoiNgayLap());
     System.out.printf("|  Nhân viên: %s %s                                                            |\n", _nv.getHo(), _nv.getTen());
     System.out.printf("|  Khách hàng: %s %s                                                           |\n", _kh.getHo(), _kh.getTen());
     System.out.printf("|  %-10s %-30s %-10s %-20s   |\n", "STT", "Tên sản phẩm", "Số lượng mua", "Thành tiền");
@@ -143,7 +151,7 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
       System.out.println("Lỗi!");
     }
     System.out.print("Nhập ngày lập: ");
-    if (!(s = in.nextLine()).isBlank()) _ngayLap = s;
+    if (!(s = in.nextLine()).isBlank()) _ngayLap = DateUtil.parseDate(s);
     DanhSachNhanVien dsnv = QuanLyCuaHangMayTinh._dsNhanVien;
     System.out.println("Danh sách nhân viên: ");
     dsnv.output();
@@ -249,10 +257,13 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
       }
       break;
     }
+    _tongTien = 0;
+    for (ChiTietHoaDon cti : _chiTiet)
+      _tongTien += cti.getThanhTien();
   }
   public void input(Scanner stream) {
     _ma = stream.nextLine();
-    _ngayLap = stream.nextLine();
+    _ngayLap = DateUtil.parseDate(stream.nextLine());
     _nv = QuanLyCuaHangMayTinh._dsNhanVien.timTheoMa(stream.nextLine());
     _kh = QuanLyCuaHangMayTinh._dsKhachHang.timTheoMa(stream.nextLine());
     _tongTien = Long.parseLong(stream.nextLine());
@@ -262,7 +273,7 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
       String nl = System.lineSeparator();
       stream.write(_ma);
       stream.write(nl);
-      stream.write(_ngayLap);
+      stream.write(DateUtil.toDateString(_ngayLap));
       stream.write(nl);
       stream.write(_nv.getMa());
       stream.write(nl);

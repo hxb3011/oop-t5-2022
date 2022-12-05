@@ -6,12 +6,12 @@ import java.util.*;
 @SuppressWarnings("unused")
 public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
   private String _ma;
-  private String _ngayLap;
+  private int _ngayLap;
   private NhanVien _nv;
   private NhaCungCap _ncc;
   private ChiTietPhieuNhapHang[] _chiTiet;
   private long _tongTien;
-  public PhieuNhapHang(String ma, String ngayLap, NhanVien nv, NhaCungCap ncc, ChiTietPhieuNhapHang[] chiTiet, long tongTien) {
+  public PhieuNhapHang(String ma, int ngayLap, NhanVien nv, NhaCungCap ncc, ChiTietPhieuNhapHang[] chiTiet, long tongTien) {
     _ma = ma;
     _ngayLap = ngayLap;
     _nv = nv;
@@ -19,12 +19,17 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
     _chiTiet = chiTiet;
     _tongTien = tongTien;
   }
+  public PhieuNhapHang(String ma, String ngayLap, NhanVien nv, NhaCungCap ncc, ChiTietPhieuNhapHang[] chiTiet, long tongTien) {
+    this(ma, DateUtil.parseDate(ngayLap), nv, ncc, chiTiet, tongTien);
+  }
   public PhieuNhapHang() { this("", "", new NhanVien(), new NhaCungCap(), new ChiTietPhieuNhapHang[0], 0L); }
   public PhieuNhapHang(PhieuNhapHang pnh) { this(pnh._ma, pnh._ngayLap, pnh._nv, pnh._ncc, pnh._chiTiet.clone(), pnh._tongTien); }
   public String getMa() { return _ma; }
   public void setMa(String ma) { _ma = ma; }
-  public String getNgayLap() { return _ngayLap; }
-  public void setNgayLap(String ngayLap) { _ngayLap = ngayLap; }
+  public int getNgayLap() { return _ngayLap; }
+  public void setNgayLap(int ngayLap) { _ngayLap = ngayLap; }
+  public String getChuoiNgayLap() { return DateUtil.toDateString(_ngayLap); }
+  public void setChuoiNgayLap(String ngayLap) { _ngayLap = DateUtil.parseDate(ngayLap); }
   public NhanVien getNhanVien() { return _nv; }
   public void setNhanVien(NhanVien nv) { _nv = nv; }
   public NhaCungCap getNhaCungCap() { return _ncc; }
@@ -62,7 +67,7 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
       _ma = in.nextLine();
     }
     System.out.print("Nhập ngày lập: ");
-    _ngayLap = in.nextLine();
+    _ngayLap = DateUtil.parseDate(in.nextLine());
     DanhSachNhanVien dsnv = QuanLyCuaHangMayTinh._dsNhanVien;
     System.out.println("Danh sách nhân viên: ");
     dsnv.output();
@@ -138,11 +143,14 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
       ct.input();
       add(ct);
     }
+    _tongTien = 0;
+    for (ChiTietPhieuNhapHang cti : _chiTiet)
+      _tongTien += cti.getThanhTien();
   }
   public void output() {
     System.out.println("+------------------------------- PHIẾU NHẬP HÀNG ------------------------------+");
     System.out.printf("|  Mã phiếu nhập hàng: %s                                                      |\n", _ma);
-    System.out.printf("|  Ngày lập: %s                                                                |\n", _ngayLap);
+    System.out.printf("|  Ngày lập: %s                                                                |\n", getChuoiNgayLap());
     System.out.printf("|  Nhân viên: %s %s                                                            |\n", _nv.getHo(), _nv.getTen());
     System.out.printf("|  Nhà cung cấp: %s                                                            |\n", _ncc.getTen());
     System.out.printf("|  %-10s %-30s %-10s %-20s   |\n", "STT", "Tên sản phẩm", "Số lượng", "Thành tiền");
@@ -169,7 +177,7 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
       System.out.println("Lỗi!");
     }
     System.out.print("Nhập ngày lập: ");
-    if (!(s = in.nextLine()).isBlank()) _ngayLap = s;
+    if (!(s = in.nextLine()).isBlank()) _ngayLap = DateUtil.parseDate(s);
     DanhSachNhanVien dsnv = QuanLyCuaHangMayTinh._dsNhanVien;
     System.out.println("Danh sách nhân viên: ");
     dsnv.output();
@@ -301,10 +309,13 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
       }
       break;
     }
+    _tongTien = 0;
+    for (ChiTietPhieuNhapHang cti : _chiTiet)
+      _tongTien += cti.getThanhTien();
   }
   public void input(Scanner stream) {
     _ma = stream.nextLine();
-    _ngayLap = stream.nextLine();
+    _ngayLap = DateUtil.parseDate(stream.nextLine());
     _nv = QuanLyCuaHangMayTinh._dsNhanVien.timTheoMa(stream.nextLine());
     _ncc = QuanLyCuaHangMayTinh._dsNhaCungCap.timTheoMa(stream.nextLine());
     _tongTien = Long.parseLong(stream.nextLine());
@@ -314,7 +325,7 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
       String nl = System.lineSeparator();
       stream.write(_ma);
       stream.write(nl);
-      stream.write(_ngayLap);
+      stream.write(DateUtil.toDateString(_ngayLap));
       stream.write(nl);
       stream.write(_nv.getMa());
       stream.write(nl);

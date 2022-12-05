@@ -25,7 +25,15 @@ public class DanhSachHoaDon implements IListConsoleIO, IListFileIO {
     int n = _soLuong, k = 0;
     HoaDon[] sp = new HoaDon[n];
     for (int i = 0 ; i < n ; ++i)
-      if (_array[i].getNgayLap().toLowerCase().equals(ngayLap)) sp[k++] = _array[i];
+      if (_array[i].getChuoiNgayLap().toLowerCase().equals(ngayLap)) sp[k++] = _array[i];
+    return Arrays.copyOf(sp, k);
+  }
+  public HoaDon[] timTheoNgayLap(int ngay, int thang, int nam) {
+    int ntn = DateUtil.getDate(ngay, thang, nam);
+    int n = _soLuong, k = 0;
+    HoaDon[] sp = new HoaDon[n];
+    for (int i = 0 ; i < n ; ++i)
+      if (_array[i].getNgayLap() == ntn) sp[k++] = _array[i];
     return Arrays.copyOf(sp, k);
   }
   public HoaDon[] timTheoMaNhanVien(String ma) {
@@ -184,6 +192,100 @@ public class DanhSachHoaDon implements IListConsoleIO, IListFileIO {
     HoaDon kh = timTheoMa(ma);
     if (kh == null) return false;
     return remove(kh);
+  }
+  public void thongKeTongTienBanTheoKhachHang() {
+    DanhSachKhachHang dskh = QuanLyCuaHangMayTinh._dsKhachHang;
+    if (dskh.soLuong() <= 0) {
+      System.out.println("Không có dữ liệu để thống kê.");
+      return;
+    }
+    long[] tongTienBan = new long[dskh.soLuong()];
+    for (int i = 0 ; i < _soLuong ; i++) {
+      for (int j = 0 ; j < dskh.soLuong() ; j++) {
+        if (dskh.get(j) == _array[i].getKhachHang()) {
+          tongTienBan[j] += _array[i].getTongTien();
+          break;
+        }
+      }
+    }
+    long tong = 0, tong2 = 0;
+    System.out.println("Tổng tiền bán hàng theo khách hàng: ");
+    for (int i = 0 ; i < tongTienBan.length ; i++) {
+      long tban = tongTienBan[i];
+      System.out.println(dskh.get(i).getHoTen() + " : " + tban + "VND");
+      tong += tban;
+      tong2 += tban * tban;
+    }
+    System.out.println("Tổng tiền bán hàng của cửa hàng: " + tong + "VND");
+    double kyVong = ((double) tong) / tongTienBan.length;
+    System.out.println("Kỳ vọng của tổng tiền bán hàng theo khách hàng: " + kyVong + "VND");
+    System.out.println("Độ lệch chuẩn của tổng tiền bán hàng theo khách hàng: "
+        + Math.sqrt((((double) tong2) / tongTienBan.length) - (kyVong * kyVong)) + "VND");
+  }
+  public void thongKeTongTienBanTheoNhanVien() {
+    DanhSachNhanVien dsnv = QuanLyCuaHangMayTinh._dsNhanVien;
+    if (dsnv.soLuong() <= 0) {
+      System.out.println("Không có dữ liệu để thống kê.");
+      return;
+    }
+    long[] tongTienBan = new long[dsnv.soLuong()];
+    for (int i = 0 ; i < _soLuong ; i++) {
+      for (int j = 0 ; j < dsnv.soLuong() ; j++) {
+        if (dsnv.get(j) == _array[i].getNhanVien()) {
+          tongTienBan[j] += _array[i].getTongTien();
+          break;
+        }
+      }
+    }
+    long tong = 0, tong2 = 0;
+    System.out.println("Tổng tiền bán hàng theo nhân viên: ");
+    for (int i = 0 ; i < tongTienBan.length ; i++) {
+      long tban = tongTienBan[i];
+      System.out.println(dsnv.get(i).getHoTen() + " : " + tban + "VND");
+      tong += tban;
+      tong2 += tban * tban;
+    }
+    System.out.println("Tổng tiền bán hàng của cửa hàng: " + tong + "VND");
+    double kyVong = ((double) tong) / tongTienBan.length;
+    System.out.println("Kỳ vọng của tổng tiền bán hàng theo nhân viên: " + kyVong + "VND");
+    System.out.println("Độ lệch chuẩn của tổng tiền bán hàng theo nhân viên: "
+        + Math.sqrt((((double) tong2) / tongTienBan.length) - (kyVong * kyVong)) + "VND");
+  }
+  public void thongKeTongTienBanTheoSanPham() {
+    DanhSachSanPham dssp = QuanLyCuaHangMayTinh._dsSanPham;
+    if (dssp.soLuong() <= 0) {
+      System.out.println("Không có dữ liệu để thống kê.");
+      return;
+    }
+    long[] tongTienBan = new long[dssp.soLuong()];
+    long[] soLuongBan = new long[dssp.soLuong()];
+    for (int i = 0 ; i < _soLuong ; i++) {
+      ChiTietHoaDon[] ct = _array[i].getChiTiet();
+      for (ChiTietHoaDon cti : ct) {
+        for (int j = 0 ; j < dssp.soLuong() ; j++) {
+          if (dssp.get(j) == cti.getSanPham()) {
+            tongTienBan[j] += cti.getThanhTien();
+            soLuongBan[j] += cti.getSoLuong();
+            break;
+          }
+        }
+      }
+    }
+    long tong = 0, tong2 = 0, soLuong = 0;
+    System.out.println("Số lượng, tổng tiền bán hàng theo sản phẩm: ");
+    for (int i = 0 ; i < tongTienBan.length ; i++) {
+      long tban = tongTienBan[i];
+      long sban = soLuongBan[i];
+      System.out.println(dssp.get(i).getTen() + " : " + sban + " : " + tban + "VND");
+      tong += tban;
+      tong2 += tban * tban;
+      soLuong += sban;
+    }
+    System.out.println("Tổng tiền bán hàng của cửa hàng: " + tong + "VND");
+    double kyVong = ((double) tong) / soLuong;
+    System.out.println("Kỳ vọng của tổng tiền bán hàng theo sản phẩm: " + kyVong + "VND");
+    System.out.println("Độ lệch chuẩn của tổng tiền bán hàng theo sản phẩm: "
+        + Math.sqrt((((double) tong2) / soLuong) - (kyVong * kyVong)) + "VND");
   }
   public void readFile() {
     Scanner base = null, spec = null;

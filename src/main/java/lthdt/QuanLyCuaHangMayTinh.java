@@ -12,7 +12,6 @@ public abstract class QuanLyCuaHangMayTinh {
   public static final DanhSachKhachHang _dsKhachHang = new DanhSachKhachHang();
   public static final DanhSachNhaCungCap _dsNhaCungCap = new DanhSachNhaCungCap();
   public static final DanhSachHoaDon _dsHoaDon = new DanhSachHoaDon();
-  // TODO: FINISH
   public static final DanhSachPhieuNhapHang _dsPhieuNhapHang = new DanhSachPhieuNhapHang();
 
   private static void menuDanhSachPhieuNhapHang() {
@@ -48,21 +47,31 @@ public abstract class QuanLyCuaHangMayTinh {
       String s = STANDARD_IN.nextLine();
       if (s.length() == 1) {
         char c = s.charAt(0);
-        if (c == '1') {
-          menuDanhSachSanPham();
-        } else if (c == '2') {
-          menuDanhSachNhanVien();
-        } else if (c == '3') {
-          menuDanhSachKhachHang();
-        } else if (c == '4') {
-          menuDanhSachNhaCungCap();
-        } else if (c == '5') {
-          menuDanhSachHoaDon();
-        } else if (c == '6') {
-          menuDanhSachPhieuNhapHang();
-        } else break;
+        if (c == '1') menuDanhSachSanPham();
+        else if (c == '2') menuDanhSachNhanVien();
+        else if (c == '3') menuDanhSachKhachHang();
+        else if (c == '4') menuDanhSachNhaCungCap();
+        else if (c == '5') menuDanhSachHoaDon();
+        else if (c == '6') menuDanhSachPhieuNhapHang();
+        else break;
       } else break;
     }
+  }
+  private static void loadDatabase() {
+    _dsSanPham.readFile();
+    _dsNhanVien.readFile();
+    _dsKhachHang.readFile();
+    _dsNhaCungCap.readFile();
+    _dsHoaDon.readFile();
+    _dsPhieuNhapHang.readFile();
+  }
+  private static void saveDatabase() {
+    _dsSanPham.writeFile();
+    _dsNhanVien.writeFile();
+    _dsKhachHang.writeFile();
+    _dsNhaCungCap.writeFile();
+    _dsHoaDon.writeFile();
+    _dsPhieuNhapHang.writeFile();
   }
   public static void processingInternalThrowable(Throwable e) {
     if (_debugMode) {
@@ -71,9 +80,50 @@ public abstract class QuanLyCuaHangMayTinh {
       System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
   }
+
+  private static void preload() {
+    DanhSachSanPham dssp = new DanhSachSanPham();
+    DanhSachNhanVien dsnv = new DanhSachNhanVien();
+    DanhSachKhachHang dskh = new DanhSachKhachHang();
+    DanhSachNhaCungCap dsncc = new DanhSachNhaCungCap();
+    DanhSachHoaDon dshd = new DanhSachHoaDon();
+    DanhSachPhieuNhapHang dspnh = new DanhSachPhieuNhapHang();
+
+    SanPham sp = null;
+    dssp.add(sp);
+    sp = null;
+    dssp.add(sp);
+    sp = null;
+    dssp.add(sp);
+    sp = null;
+    dssp.add(sp);
+    sp = null;
+    dssp.add(sp);
+    sp = null;
+    dssp.add(sp);
+    sp = null;
+    dssp.add(sp);
+    sp = null;
+    dssp.add(sp);
+    sp = null;
+    dssp.add(sp);
+    sp = null;
+    dssp.add(sp);
+
+    // TODO: other...
+
+    dssp.writeFile();
+    dsnv.writeFile();
+    dskh.writeFile();
+    dsncc.writeFile();
+    dshd.writeFile();
+    dspnh.writeFile();
+  }
+
   private static void configure(String[] args) {
     int CF_DEBUG = 1;
-    int CF_DB_PATH = 2;
+    int CF_PRELOAD = 2;
+    int CF_DB_PATH = 4;
     int configured = 0;
     for (int i = 0, n = args.length ; i < n ; i++) {
       String arg = args[i];
@@ -81,20 +131,34 @@ public abstract class QuanLyCuaHangMayTinh {
         if ((configured & CF_DEBUG) == CF_DEBUG) {
           if (_debugMode) {
             System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            System.out.println("Warning: Duplicate flag --debug-mode.");
+            System.out.println("Cảnh báo: Trùng lặp cờ --debug-mode.");
             System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
           }
-        } else configured |= CF_DEBUG;
-        _debugMode = true;
+        } else {
+          configured |= CF_DEBUG;
+          _debugMode = true;
+        }
         continue;
-      } else if (arg.startsWith("-p")) {
+      } else if (arg.startsWith("-p") || arg.startsWith("--preload-mode")) {
+        if ((configured & CF_PRELOAD) == CF_PRELOAD) {
+          if (_debugMode) {
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.out.println("Cảnh báo: Trùng lặp cờ --preload-mode.");
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+          }
+        } else {
+          configured |= CF_PRELOAD;
+          preload();
+        }
+        continue;
+      } else if (arg.startsWith("-d")) {
         arg = arg.substring(2);
       } else if (arg.startsWith("--database-path=")) {
         arg = arg.substring(16);
       } else {
         if (_debugMode) {
           System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-          System.out.println("Warning: Unknown argument " + arg + ".");
+          System.out.println("Cảnh báo: Không nhận dạng được tham số dòng lệnh: " + arg + ".");
           System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
         continue;
@@ -103,7 +167,7 @@ public abstract class QuanLyCuaHangMayTinh {
       if ((configured & CF_DB_PATH) == CF_DB_PATH) {
         if (_debugMode) {
           System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-          System.out.println("Warning: Duplicate flag --database-path.");
+          System.out.println("Cảnh báo: Trùng lặp cờ --database-path=.");
           System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
       } else configured |= CF_DB_PATH;
@@ -118,13 +182,24 @@ public abstract class QuanLyCuaHangMayTinh {
       for (String s = String.valueOf(c) ; i < n && !(arg = args[i]).endsWith(s) ; i++)
         _databasePath += ' ' + arg;
       if (i < n) _databasePath += ' ' + arg.substring(0, arg.length() - 1);
+      else {
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println("Cảnh báo: Có vấn đề với cờ --database-path=.");
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+      }
     }
+    Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+      processingInternalThrowable(e);
+      System.out.println("Có lỗi xảy ra! Đang thoát...");
+      System.exit(-1);
+    });
   }
   private QuanLyCuaHangMayTinh() { }
   public static void main(String[] args) {
     configure(args);
-    System.out.println(_debugMode);
-    System.out.println(_databasePath);
-    // menuQuanLy();
+    loadDatabase();
+    menuQuanLy();
+    saveDatabase();
+    System.exit(0);
   }
 }
