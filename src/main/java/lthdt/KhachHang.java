@@ -2,6 +2,7 @@ package lthdt;
 
 import java.util.Scanner;
 
+
 public class KhachHang 
 {
     private String MaKH;
@@ -28,15 +29,39 @@ public class KhachHang
     }
     public void nhap()
     {
+        nhapMaKH();
+        nhapHo();
+        nhapTen();
+        nhapSDT();
+        nhapDiaChi();
+    }
+    public void nhapMaKH()
+    {
         Scanner in = new Scanner(System.in);
         System.out.print("\nNhap ma khach hang: ");
         MaKH = in.nextLine();
+    }
+    public void nhapHo()
+    {
+        Scanner in = new Scanner(System.in);
         System.out.print("Nhap ho khach hang: ");
         Ho = in.nextLine();
+    }
+    public void nhapTen()
+    {
+        Scanner in = new Scanner(System.in);
         System.out.print("Nhap ten khach hang: ");
         Ten = in.nextLine();
+    }
+    public void nhapSDT()
+    {
+        Scanner in = new Scanner(System.in);
         System.out.print("Nhap so dien thoai khach hang: ");
         SoDT = in.nextLine();
+    }
+    public void nhapDiaChi()
+    {
+        Scanner in = new Scanner(System.in);
         System.out.print("Nhap dia chi khach hang: ");
         DiaChiKH = in.nextLine();
     }

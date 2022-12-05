@@ -1,43 +1,160 @@
 package lthdt;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.Scanner;
+
 
 class Laptop extends SanPham
 {
     private boolean CamUng;
     private String BanPhim;
+    private boolean LedBanPhim;
     private String Loa;
     public Laptop() {}
-    public Laptop(String masp, String tensp, long dongia, int tonkho, ChiTietSanPham chitiet, boolean camung, String banphim, String loa)
+    public Laptop(String masp, String tensp, long dongia, int tonkho, ChiTietSanPham chitiet, boolean camung, String banphim, boolean led, String loa)
     {
         super(masp, tensp, dongia, tonkho, chitiet);
         CamUng = camung;
-        BanPhim = banphim;
+        LedBanPhim = led;
+        BanPhim = banphim;  
         Loa = loa;
     }
-    public Laptop(SanPham sp, boolean camung, String banphim, String loa)
+    public Laptop(Laptop sp)
     {
         super(sp);
-        CamUng = camung;
-        BanPhim = banphim;
-        Loa = loa;
+        CamUng = sp.getCamUng();
+        BanPhim = sp.getBP();
+        LedBanPhim = sp.getLed();
+        Loa = sp.getLoa();
+    }
+    @Override public void docFile(Scanner in)
+    {
+        super.docFile(in);
+        CamUng = Boolean.parseBoolean(in.nextLine());
+        BanPhim = in.nextLine();
+        LedBanPhim = Boolean.parseBoolean(in.nextLine());
+        Loa = in.nextLine();       
+    }
+    @Override public void ghiFile(DataOutputStream output) throws IOException
+    {
+        super.ghiFile(output);
+        output.writeBytes(Boolean.toString(CamUng));
+        output.writeBytes(System.lineSeparator());
+        output.writeBytes(BanPhim);
+        output.writeBytes(System.lineSeparator());
+        output.writeBytes(Boolean.toString(LedBanPhim));
+        output.writeBytes(System.lineSeparator());
+        output.writeBytes(Loa);
+        output.writeBytes(System.lineSeparator());
     }
     @Override public void nhap()
     {
-        Scanner in = new Scanner(System.in);
         super.nhap();
-        System.out.print("Co cam ung?(True/False): ");
-        CamUng = Boolean.parseBoolean(in.nextLine());
+        nhapCamUng();
+        nhapBanPhim();
+        nhapLed();
+        nhapLoa();   
+    }
+    public void nhapCamUng()
+    {
+        Scanner in = new Scanner(System.in);
+        int flag = 0;
+        while( flag == 0 )
+        {
+            System.out.print("San pham co man hinh cam ung khong?\n[1]Co\n[2]Khong \n");
+            byte lc = Byte.parseByte(in.nextLine());
+            switch(lc)
+            {
+                case 1:
+                {
+                    CamUng = true;
+                    flag = 1;
+                    break;
+                }
+                case 2:
+                { 
+                    CamUng = false;
+                    flag = 2;
+                    break;
+                }
+                default:
+                {
+                    System.out.println("Nhap sai lua chon, vui long nhap lai");
+                }
+            }           
+        }
+    }
+    public void nhapBanPhim()
+    {
+        Scanner in = new Scanner(System.in);
         System.out.print("Nhap ten ban phim: ");
-        BanPhim = in.nextLine();    
-        System.out.print("Nhap ten loa: ");
-        Loa = in.nextLine();    
+        BanPhim = in.nextLine();  
+    }
+    public void nhapLed()
+    {
+        Scanner in = new Scanner(System.in);
+        int flag = 0;
+        while( flag == 0 )
+        {
+            System.out.print("San pham co Led ban phim khong?\n[1]Co\n[2]Khong \n");
+            byte lc = Byte.parseByte(in.nextLine());
+            switch(lc)
+            {
+                case 1:
+                {
+                    LedBanPhim = true;
+                    flag = 1;
+                    break;
+                }
+                case 2:
+                { 
+                    LedBanPhim = false;
+                    flag = 2;
+                    break;
+                }
+                default:
+                {
+                    System.out.println("Nhap sai lua chon, vui long nhap lai");
+                }
+            }           
+        }
+    }
+    public void nhapLoa()
+    {
+        Scanner in = new Scanner(System.in);
+        System.out.print("Nhap chat luong loa: ");
+        Loa = in.nextLine();
     }
     @Override public void xuat()
     {
         super.xuat();
-        System.out.printf("\nCam ung %20s Ban phim %20s Loa","","","");
-        System.out.printf("\n%b %20s %20s", CamUng, BanPhim, Loa);
+    }
+    @Override public void xuatChiTiet()
+    {
+        super.xuatChiTiet();
+        if( CamUng )
+        {
+            if( LedBanPhim )
+            {
+                System.out.printf("\n%s: %s \n%s: %s \n%s: %s \n%s: %s","Cam ung",  "Co", "Ban phim:",BanPhim, "Led ban phim","Co", "Chat luong loa",Loa);
+            }
+            else
+            {
+                System.out.printf("\n%s: %s \n%s: %s \n%s: %s \n%s: %s","Cam ung",  "Co", "Ban phim:",BanPhim, "Led ban phim","Khong", "Chat luong loa",Loa);
+            }
+        }
+        else
+        {
+            if( LedBanPhim )
+            {
+                System.out.printf("\n%s: %s \n%s: %s \n%s: %s \n%s: %s","Cam ung",  "Khong", "Ban phim:",BanPhim, "Led ban phim","Co", "Chat luong loa",Loa);
+            }
+            else
+            {
+                System.out.printf("\n%s: %s \n%s: %s \n%s: %s \n%s: %s","Cam ung",  "Khong", "Ban phim:",BanPhim, "Led ban phim","Khong", "Chat luong loa",Loa);
+            }          
+        }
     }
     public void setCamUng(boolean camung)
     {
@@ -54,6 +171,14 @@ class Laptop extends SanPham
     public String getBP()
     {
         return BanPhim;
+    }
+    public void setLed(boolean led)
+    {
+        LedBanPhim = led;
+    }
+    public boolean getLed()
+    {
+        return LedBanPhim;
     }
     public void setLoa(String loa)
     {

@@ -1,6 +1,9 @@
 package lthdt;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.Scanner;
+
 
 class MayTinhBan extends SanPham
 {
@@ -11,22 +14,36 @@ class MayTinhBan extends SanPham
         super(masp, tensp, dongia, tonkho, chitiet);
         PhuKien = phukien;
     }
-    public MayTinhBan(SanPham sp, String phukien)
+    public MayTinhBan(MayTinhBan sp)
     {
         super(sp);
-        PhuKien = phukien;       
+        PhuKien = sp.getPK();
+    }
+    @Override public void docFile(Scanner in)
+    {
+        super.docFile(in);
+        PhuKien = in.nextLine();
+    }
+    @Override public void ghiFile(DataOutputStream output) throws IOException
+    {
+        super.ghiFile(output);
+        output.writeBytes(PhuKien);
+        output.writeBytes(System.lineSeparator());
     }
     @Override public void nhap()
     {
-        Scanner in = new Scanner(System.in);
         super.nhap();
+        nhapPhuKien();     
+    }
+    public void nhapPhuKien()
+    {
+        Scanner in = new Scanner(System.in);
         System.out.print("Nhap cac phu kien di kem: ");
-        PhuKien = in.nextLine();       
+        PhuKien = in.nextLine();  
     }
     @Override public void xuat()
     {
         super.xuat();
-        System.out.printf("\nPhuKien \n %s", PhuKien);
     }
     public void setPK(String phukien)
     {
@@ -35,5 +52,10 @@ class MayTinhBan extends SanPham
     public String getPK()
     {
         return PhuKien;
+    }
+    @Override public void xuatChiTiet()
+    {
+        super.xuatChiTiet();
+        System.out.printf("\n%s: %s","Phu kien", PhuKien);
     }
 }

@@ -2,6 +2,10 @@ package lthdt;
 
 import java.util.Scanner;
 
+/**
+ *
+ * @author homeuser
+ */
 public class NhanVien 
 {
     private String MaNV;
@@ -31,17 +35,46 @@ public class NhanVien
     }
     public void nhap()
     {
+        nhapMaNV();
+        nhapHo();
+        nhapTen();
+        nhapSDT();
+        nhapLuong();
+        nhapNVL();
+    }
+    public void nhapMaNV()
+    {
         Scanner in = new Scanner(System.in);
-        System.out.print("\nNhap ma nhan vien: ");
+        System.out.print("\nNhap ma khach hang: ");
         MaNV = in.nextLine();
+    }
+    public void nhapHo()
+    {
+        Scanner in = new Scanner(System.in);
         System.out.print("Nhap ho nhan vien: ");
         Ho = in.nextLine();
+    }
+    public void nhapTen()
+    {
+        Scanner in = new Scanner(System.in);
         System.out.print("Nhap ten nhan vien: ");
         Ten = in.nextLine();
+    }
+    public void nhapSDT()
+    {
+        Scanner in = new Scanner(System.in);
         System.out.print("Nhap so dien thoai nhan vien: ");
         SoDT = in.nextLine();
+    }
+    public void nhapLuong()
+    {
+        Scanner in = new Scanner(System.in);
         System.out.print("Nhap muc luong hang thang cua nhan vien: ");
         MucLuong = Long.parseLong(in.nextLine());
+    }
+    public void nhapNVL()
+    {
+        Scanner in = new Scanner(System.in);        
         System.out.print("Nhap nam vao lam cua nhan vien: ");
         NamVaoLam = Integer.parseInt(in.nextLine());
     }

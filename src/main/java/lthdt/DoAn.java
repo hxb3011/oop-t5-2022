@@ -1,23 +1,15 @@
 package lthdt;
-
+import java.io.IOException;
 public class DoAn {
 
-    public static void main(String[] args) 
+    public static void main(String[] args) throws IOException
     {
-        MayTinhBan sp1 = new MayTinhBan();
-        sp1.nhap();
-        sp1.xuat();
-        
-        Laptop sp2 = new Laptop();
-        sp2.nhap();
-        sp2.xuat();
-        
-        KhachHang kh = new KhachHang();
-        kh.nhap();
-        kh.xuat();
-        
-        NhanVien nv = new NhanVien();
-        nv.nhap();
-        nv.xuat();
+       DSSP ds = new DSSP();
+//       ds.nhap();
+//       ds.ghithem();
+       ds.docFile();
+       ds.xuat();
+       Laptop lt = ds.timsanpham("LT001");
+       lt.xuat();
     }
 }
