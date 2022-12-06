@@ -37,19 +37,65 @@ public final class NhanVien implements IConsoleIO, IConsoleEditable, IStreamIO {
   public void input() {
     Scanner in = QuanLyCuaHangMayTinh.STANDARD_IN;
     if (_ma.isBlank()) {
-      System.out.print("Nhập mã nhân viên: ");
-      _ma = in.nextLine();
+      while (true) {
+        System.out.print("Nhập mã nhân viên: ");
+        String s = in.nextLine();
+        if (Validator.validateID(s)) {
+          _ma = s;
+          break;
+        }
+        System.out.println("Lỗi!");
+      }
     }
-    System.out.print("Nhập họ: ");
-    _ho = in.nextLine();
-    System.out.print("Nhập tên: ");
-    _ten = in.nextLine();
-    System.out.print("Nhập số điện thoại: ");
-    _soDienThoai = in.nextLine();
-    System.out.print("Nhập mức lương: ");
-    _mucLuong = Long.parseLong(in.nextLine());
-    System.out.print("Nhập năm vào làm: ");
-    _namVaoLam = Integer.parseInt(in.nextLine());
+    while (true) {
+      System.out.print("Nhập họ: ");
+      String s = in.nextLine();
+      if (Validator.validateName(s)) {
+        _ho = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập tên: ");
+      String s = in.nextLine();
+      if (Validator.validateName(s)) {
+        _ten = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập số điện thoại: ");
+      String s = in.nextLine();
+      if (Validator.validatePhoneNumber(s)) {
+        _soDienThoai = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập mức lương: ");
+      String s = in.nextLine();
+      try {
+        _mucLuong = Long.parseLong(s);
+        break;
+      } catch (Throwable e) {
+        QuanLyCuaHangMayTinh.processingInternalThrowable(e);
+        System.out.println("Lỗi!");
+      }
+    }
+    while (true) {
+      System.out.print("Nhập năm vào làm: ");
+      String s = in.nextLine();
+      try {
+        _namVaoLam = Integer.parseInt(s);
+        break;
+      } catch (Throwable e) {
+        QuanLyCuaHangMayTinh.processingInternalThrowable(e);
+        System.out.println("Lỗi!");
+      }
+    }
   }
   public void output() {
     System.out.printf("\tMã: %s\n\tHọ tên: %s %s\n\tSố điện thoại: %s\n\tMức lương: %d\n\tNăm vào làm: %d\n", _ma, _ho, _ten, _soDienThoai, _mucLuong, _namVaoLam);
@@ -61,23 +107,66 @@ public final class NhanVien implements IConsoleIO, IConsoleEditable, IStreamIO {
     DanhSachNhanVien dsnv = QuanLyCuaHangMayTinh._dsNhanVien;
     while (true) {
       System.out.print("Nhập mã nhân viên: ");
-      if ((s = in.nextLine()).isBlank()) break;
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (!Validator.validateID(s)) {
+        System.out.println("Lỗi!");
+        continue;
+      }
       if (!dsnv.daCo(s)) {
         _ma = s;
         break;
       }
       System.out.println("Lỗi!");
     }
-    System.out.print("Nhập họ: ");
-    if (!(s = in.nextLine()).isBlank()) _ho = s;
-    System.out.print("Nhập tên: ");
-    if (!(s = in.nextLine()).isBlank()) _ten = s;
-    System.out.print("Nhập số điện thoại: ");
-    if (!(s = in.nextLine()).isBlank()) _soDienThoai = s;
-    System.out.print("Nhập mức lương: ");
-    if (!(s = in.nextLine()).isBlank()) _mucLuong = Long.parseLong(s);
-    System.out.print("Nhập năm vào làm: ");
-    if (!(s = in.nextLine()).isBlank()) _namVaoLam = Integer.parseInt(s);
+    while (true) {
+      System.out.print("Nhập họ: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (Validator.validateName(s)) {
+        _ho = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập tên: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (Validator.validateName(s)) {
+        _ten = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập số điện thoại: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (Validator.validatePhoneNumber(s)) {
+        _soDienThoai = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập mức lương: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      try {
+        _mucLuong = Long.parseLong(s);
+        break;
+      } catch (Throwable e) {
+        QuanLyCuaHangMayTinh.processingInternalThrowable(e);
+        System.out.println("Lỗi!");
+      }
+    }
+    while (true) {
+      System.out.print("Nhập năm vào làm: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      try {
+        _namVaoLam = Integer.parseInt(s);
+        break;
+      } catch (Throwable e) {
+        QuanLyCuaHangMayTinh.processingInternalThrowable(e);
+        System.out.println("Lỗi!");
+      }
+    }
   }
   public void input(Scanner in) {
     if (_ma.isBlank()) _ma = in.nextLine();

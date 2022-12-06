@@ -40,20 +40,65 @@ public final class ChiTietSanPham implements IConsoleIO, IConsoleEditable, IStre
 
   public void input() {
     Scanner in = QuanLyCuaHangMayTinh.STANDARD_IN;
-    System.out.print("Nhập thông số CPU: ");
-    _CPU = in.nextLine();
-    System.out.print("Nhập thông số GPU: ");
-    _GPU = in.nextLine();
-    System.out.print("Nhập thông số RAM: ");
-    _RAM = in.nextLine();
-    System.out.print("Nhập thông số màn hình: ");
-    _manHinh = in.nextLine();
-    System.out.print("Nhập tên hệ điều hành: ");
-    _heDieuHanh = in.nextLine();
-    System.out.print("Nhập năm sản xuất: ");
-    _namSanXuat = in.nextLine();
-    System.out.print("Nhập thời gian bảo hành: ");
-    _thoiGianBaoHanh = Integer.parseInt(in.nextLine());
+    String s;
+    while (true) {
+      System.out.print("Nhập thông số CPU: ");
+      if (Validator.validateName(s = in.nextLine())) {
+        _CPU = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập thông số GPU: ");
+      if (Validator.validateName(s = in.nextLine())) {
+        _GPU = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập thông số RAM: ");
+      if (Validator.validateName(s = in.nextLine())) {
+        _RAM = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập thông số màn hình: ");
+      if (Validator.validateName(s = in.nextLine())) {
+        _manHinh = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập tên hệ điều hành: ");
+      if (Validator.validateName(s = in.nextLine())) {
+        _heDieuHanh = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập năm sản xuất: ");
+      if (Validator.validateName(s = in.nextLine())) {
+        _namSanXuat = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập thời gian bảo hành: ");
+      try {
+        _thoiGianBaoHanh = Integer.parseInt(s);
+        break;
+      } catch (Throwable e) {
+        QuanLyCuaHangMayTinh.processingInternalThrowable(e);
+        System.out.println("Lỗi!");
+      }
+    }
   }
   public void output() {
     System.out.printf("Thông tin sản phẩm: \n\tCPU: %s\n\tGPU: %s\n\tRAM: %s\n\tMàn hình: %s\n\tHệ điều hành: %s\n\tThời gian bảo hành: %d\n\tNăm sản xuất: %s\n",
@@ -63,20 +108,71 @@ public final class ChiTietSanPham implements IConsoleIO, IConsoleEditable, IStre
     String s;
     Scanner in = QuanLyCuaHangMayTinh.STANDARD_IN;
     System.out.println(QuanLyCuaHangMayTinh.EDIT_NOTE);
-    System.out.print("Nhập thông số CPU: ");
-    if (!(s = in.nextLine()).isBlank()) _CPU = s;
-    System.out.print("Nhập thông số GPU: ");
-    if (!(s = in.nextLine()).isBlank()) _GPU = s;
-    System.out.print("Nhập thông số RAM: ");
-    if (!(s = in.nextLine()).isBlank()) _RAM = s;
-    System.out.print("Nhập thông số màn hình: ");
-    if (!(s = in.nextLine()).isBlank()) _manHinh = s;
-    System.out.print("Nhập tên hệ điều hành: ");
-    if (!(s = in.nextLine()).isBlank()) _heDieuHanh = s;
-    System.out.print("Nhập năm sản xuất: ");
-    if (!(s = in.nextLine()).isBlank()) _namSanXuat = s;
-    System.out.print("Nhập thời gian bảo hành: ");
-    if (!(s = in.nextLine()).isBlank()) _thoiGianBaoHanh = Integer.parseInt(s);
+    while (true) {
+      System.out.print("Nhập thông số CPU: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (Validator.validateName(s)) {
+        _CPU = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập thông số GPU: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (Validator.validateName(s)) {
+        _GPU = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập thông số RAM: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (Validator.validateName(s)) {
+        _RAM = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập thông số màn hình: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (Validator.validateName(s)) {
+        _manHinh = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập tên hệ điều hành: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (Validator.validateName(s)) {
+        _heDieuHanh = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập năm sản xuất: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (Validator.validateName(s)) {
+        _namSanXuat = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập thời gian bảo hành: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      try {
+        _thoiGianBaoHanh = Integer.parseInt(s);
+        break;
+      } catch (Throwable e) {
+        QuanLyCuaHangMayTinh.processingInternalThrowable(e);
+        System.out.println("Lỗi!");
+      }
+    }
   }
   public void input(Scanner in) {
     _CPU = in.nextLine();

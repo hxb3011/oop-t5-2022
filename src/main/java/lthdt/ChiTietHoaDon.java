@@ -35,14 +35,22 @@ public class ChiTietHoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
       while (true) {
         System.out.print("Nhập mã sản phẩm: ");
         String s = in.nextLine();
-        _sp = dssp.timTheoMa(s);
-        if (_sp != null && _sp.getSoLuong() > 0) break;
+        if (Validator.validateID(s)) {
+          _sp = dssp.timTheoMa(s);
+          if (_sp != null && _sp.getSoLuong() > 0) break;
+        }
         System.out.println("Lỗi!");
       }
     }
     while (true) {
       System.out.println("Nhập số lượng sản phẩm: ");
-      _soLuong = Integer.parseInt(in.nextLine());
+      try {
+        _soLuong = Integer.parseInt(in.nextLine());
+      } catch (Throwable e) {
+        QuanLyCuaHangMayTinh.processingInternalThrowable(e);
+        System.out.println("Lỗi!");
+        continue;
+      }
       if (_soLuong >= 0 && _sp.getSoLuong() >= _soLuong) {
         _sp.setSoLuong(_sp.getSoLuong() - _soLuong);
         break;
@@ -75,21 +83,30 @@ public class ChiTietHoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
     while (true) {
       System.out.print("Nhập mã sản phẩm: ");
       String s = in.nextLine();
-      if (s.isBlank()) break;
-      SanPham sp = dssp.timTheoMa(s);
-      if (sp != null && sp.getSoLuong() >= _soLuong) {
-        _sp.setSoLuong(_sp.getSoLuong() + _soLuong);
-        sp.setSoLuong(sp.getSoLuong() - _soLuong);
-        _sp = sp;
-        break;
+      if (s.isEmpty()) break;
+      if (Validator.validateID(s)) {
+        SanPham sp = dssp.timTheoMa(s);
+        if (sp != null && sp.getSoLuong() >= _soLuong) {
+          _sp.setSoLuong(_sp.getSoLuong() + _soLuong);
+          sp.setSoLuong(sp.getSoLuong() - _soLuong);
+          _sp = sp;
+          break;
+        }
       }
       System.out.println("Lỗi!");
     }
     while (true) {
       System.out.println("Nhập số lượng sản phẩm: ");
       String s = in.nextLine();
-      if (s.isBlank()) break;
-      int soLuong = Integer.parseInt(s);
+      if (s.isEmpty()) break;
+      int soLuong;
+      try {
+        soLuong = Integer.parseInt(s);
+      } catch (Throwable e) {
+        QuanLyCuaHangMayTinh.processingInternalThrowable(e);
+        System.out.println("Lỗi!");
+        continue;
+      }
       int soLuongTon = _sp.getSoLuong() + _soLuong;
       if (soLuong > 0 && soLuongTon >= soLuong) {
         _soLuong = soLuong;

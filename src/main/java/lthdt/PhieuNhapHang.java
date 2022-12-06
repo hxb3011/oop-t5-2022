@@ -63,17 +63,32 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
   public void input() {
     Scanner in = QuanLyCuaHangMayTinh.STANDARD_IN;
     if (_ma.isBlank()) {
-      System.out.print("Nhập mã phiếu nhập hàng: ");
-      _ma = in.nextLine();
+      while (true) {
+        System.out.print("Nhập mã phiếu nhập hàng: ");
+        String s = in.nextLine();
+        if (Validator.validateID(s)) {
+          _ma = s;
+          break;
+        }
+        System.out.println("Lỗi!");
+      }
     }
-    System.out.print("Nhập ngày lập: ");
-    _ngayLap = DateUtil.parseDate(in.nextLine());
+    while (true) {
+      System.out.print("Nhập ngày lập: ");
+      _ngayLap = DateUtil.parseDate(in.nextLine());
+      if (_ngayLap != DateUtil.DATE_ERROR_DATE) break;
+      System.out.println("Lỗi!");
+    }
     DanhSachNhanVien dsnv = QuanLyCuaHangMayTinh._dsNhanVien;
     System.out.println("Danh sách nhân viên: ");
     dsnv.output();
     while (true) {
       System.out.print("Nhập mã nhân viên: ");
       String ma = in.nextLine();
+      if (!Validator.validateID(ma)) {
+        System.out.println("Lỗi!");
+        continue;
+      }
       NhanVien nv = dsnv.timTheoMa(ma);
       if (nv != null) break;
       System.out.println("Lỗi!");
@@ -85,6 +100,10 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
       System.out.print("Nhập mã nhà cung cấp: ");
       String ma = in.nextLine();
       _ncc = dskh.timTheoMa(ma);
+      if (!Validator.validateID(ma)) {
+        System.out.println("Lỗi!");
+        continue;
+      }
       if (_ncc != null) break;
       System.out.println("Thêm nhà cung cấp mới? (*. Không / 1. Phải): ");
       String ans = in.nextLine();
@@ -101,13 +120,17 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
     ChiTietPhieuNhapHang ct = new ChiTietPhieuNhapHang();
     ct.input();
     while (true) {
-      System.out.println("Thêm Chi tiết hoá đơn? (*. Không / 1. Phải): ");
+      System.out.println("Thêm chi tiết phiếu nhập hàng? (*. Không / 1. Phải): ");
       String ans = in.nextLine();
       if (ans.length() != 1 || ans.charAt(0) != '1') break;
       SanPham sp;
       while (true) {
         System.out.print("Nhập mã sản phẩm: ");
         String s = in.nextLine();
+        if (!Validator.validateID(s)) {
+          System.out.println("Lỗi!");
+          continue;
+        }
         sp = dssp.timTheoMa(s);
         if (!contain(s)) break;
         if (sp == null) {
@@ -168,7 +191,11 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
     String s;
     while (true) {
       System.out.print("Nhập mã phiếu nhập hàng: ");
-      if ((s = in.nextLine()).isBlank()) break;
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (!Validator.validateID(s)) {
+        System.out.println("Lỗi!");
+        continue;
+      }
       PhieuNhapHang pnh = QuanLyCuaHangMayTinh._dsPhieuNhapHang.timTheoMa(s);
       if (pnh == null) {
         _ma = s;
@@ -176,14 +203,23 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
       }
       System.out.println("Lỗi!");
     }
-    System.out.print("Nhập ngày lập: ");
-    if (!(s = in.nextLine()).isBlank()) _ngayLap = DateUtil.parseDate(s);
+    while (true) {
+      System.out.print("Nhập ngày lập: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      _ngayLap = DateUtil.parseDate(s);
+      if (_ngayLap != DateUtil.DATE_ERROR_DATE) break;
+      System.out.println("Lỗi!");
+    }
     DanhSachNhanVien dsnv = QuanLyCuaHangMayTinh._dsNhanVien;
     System.out.println("Danh sách nhân viên: ");
     dsnv.output();
     while (true) {
       System.out.print("Nhập mã nhân viên: ");
-      if ((s = in.nextLine()).isBlank()) break;
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (!Validator.validateID(s)) {
+        System.out.println("Lỗi!");
+        continue;
+      }
       NhanVien nv = dsnv.timTheoMa(s);
       if (nv != null) {
         _nv = nv;
@@ -196,7 +232,11 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
     dskh.output();
     while (true) {
       System.out.print("Nhập mã nhà cung cấp: ");
-      if ((s = in.nextLine()).isBlank()) break;
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (!Validator.validateID(s)) {
+        System.out.println("Lỗi!");
+        continue;
+      }
       NhaCungCap ncc = dskh.timTheoMa(s);
       if (ncc != null) {
         _ncc = ncc;
@@ -222,7 +262,10 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
           SanPham sp;
           while (true) {
             System.out.print("Nhập mã sản phẩm: ");
-            s = in.nextLine();
+            if (!Validator.validateID(s = in.nextLine())) {
+              System.out.println("Lỗi!");
+              continue;
+            }
             sp = dssp.timTheoMa(s);
             if (!contain(s)) break;
             if (sp == null) {

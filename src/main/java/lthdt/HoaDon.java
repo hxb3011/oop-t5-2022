@@ -61,19 +61,34 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
     return true;
   }
   public void input() {
+    String s;
     Scanner in = QuanLyCuaHangMayTinh.STANDARD_IN;
-    if (_ma.isBlank()) {
-      System.out.print("Nhập mã hoá đơn: ");
-      _ma = in.nextLine();
+    if (_ma.isEmpty()) {
+      while (true) {
+        System.out.print("Nhập mã hoá đơn: ");
+        if (Validator.validateID(s = in.nextLine())) {
+          _ma = s;
+          break;
+        }
+        System.out.println("Lỗi!");
+      }
     }
-    System.out.print("Nhập ngày lập: ");
-    _ngayLap = DateUtil.parseDate(in.nextLine());
+    while (true) {
+      System.out.print("Nhập ngày lập: ");
+      _ngayLap = DateUtil.parseDate(in.nextLine());
+      if (_ngayLap != DateUtil.DATE_ERROR_DATE) break;
+      System.out.println("Lỗi!");
+    }
     DanhSachNhanVien dsnv = QuanLyCuaHangMayTinh._dsNhanVien;
     System.out.println("Danh sách nhân viên:");
     dsnv.output();
     while (true) {
       System.out.print("Nhập mã nhân viên: ");
       String ma = in.nextLine();
+      if (!Validator.validateID(ma)) {
+        System.out.println("Lỗi!");
+        continue;
+      }
       _nv = dsnv.timTheoMa(ma);
       if (_nv != null) break;
       System.out.println("Lỗi!");
@@ -84,6 +99,10 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
     while (true) {
       System.out.print("Nhập mã khách hàng: ");
       String ma = in.nextLine();
+      if (!Validator.validateID(ma)) {
+        System.out.println("Lỗi!");
+        continue;
+      }
       _kh = dskh.timTheoMa(ma);
       if (_kh != null) break;
       System.out.println("Thêm khách hàng mới? (*. Không / 1. Phải): ");
@@ -107,7 +126,10 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
       SanPham sp;
       while (true) {
         System.out.print("Nhập mã sản phẩm: ");
-        String s = in.nextLine();
+        if (!Validator.validateID(s = in.nextLine())) {
+          System.out.println("Lỗi!");
+          continue;
+        }
         sp = dssp.timTheoMa(s);
         if (!contain(s) && sp != null && sp.getSoLuong() > 0) break;
         System.out.println("Lỗi!");
@@ -142,7 +164,11 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
     String s;
     while (true) {
       System.out.print("Nhập mã hoá đơn: ");
-      if ((s = in.nextLine()).isBlank()) break;
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (!Validator.validateID(s)) {
+        System.out.println("Lỗi!");
+        continue;
+      }
       HoaDon hd = QuanLyCuaHangMayTinh._dsHoaDon.timTheoMa(s);
       if (hd == null) {
         _ma = s;
@@ -150,14 +176,23 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
       }
       System.out.println("Lỗi!");
     }
-    System.out.print("Nhập ngày lập: ");
-    if (!(s = in.nextLine()).isBlank()) _ngayLap = DateUtil.parseDate(s);
+    while (true) {
+      System.out.print("Nhập ngày lập: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      _ngayLap = DateUtil.parseDate(s);
+      if (_ngayLap != DateUtil.DATE_ERROR_DATE) break;
+      System.out.println("Lỗi!");
+    }
     DanhSachNhanVien dsnv = QuanLyCuaHangMayTinh._dsNhanVien;
     System.out.println("Danh sách nhân viên: ");
     dsnv.output();
     while (true) {
       System.out.print("Nhập mã nhân viên: ");
-      if ((s = in.nextLine()).isBlank()) break;
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (!Validator.validateID(s)) {
+        System.out.println("Lỗi!");
+        continue;
+      }
       NhanVien nv = dsnv.timTheoMa(s);
       if (nv != null) {
         _nv = nv;
@@ -170,7 +205,11 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
     dskh.output();
     while (true) {
       System.out.print("Nhập mã khách hàng: ");
-      if ((s = in.nextLine()).isBlank()) break;
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (!Validator.validateID(s)) {
+        System.out.println("Lỗi!");
+        continue;
+      }
       KhachHang kh = dskh.timTheoMa(s);
       if (kh != null) {
         _kh = kh;
@@ -196,7 +235,10 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
           SanPham sp;
           while (true) {
             System.out.print("Nhập mã sản phẩm: ");
-            s = in.nextLine();
+            if (!Validator.validateID(s = in.nextLine())) {
+              System.out.println("Lỗi!");
+              continue;
+            }
             sp = dssp.timTheoMa(s);
             if (!contain(s) && sp != null && sp.getSoLuong() > 0) break;
             System.out.println("Lỗi!");

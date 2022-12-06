@@ -31,44 +31,107 @@ public final class KhachHang implements IConsoleIO, IConsoleEditable, IStreamIO 
   public String getDiaChi() { return _diaChi; }
   public void setDiaChi(String diaChi) { _diaChi = diaChi; }
   public void input() {
+    String s;
     Scanner in = QuanLyCuaHangMayTinh.STANDARD_IN;
-    if (_ma.isBlank()) {
-      System.out.print("Nhập mã khách hàng: ");
-      _ma = in.nextLine();
+    if (_ma.isEmpty()) {
+      while (true) {
+        System.out.print("Nhập mã khách hàng: ");
+        if (Validator.validateID(s = in.nextLine())) {
+          _ma = s;
+          break;
+        }
+        System.out.println("Lỗi!");
+      }
     }
-    System.out.print("Nhập họ: ");
-    _ho = in.nextLine();
-    System.out.print("Nhập tên: ");
-    _ten = in.nextLine();
-    System.out.print("Nhập số điện thoại: ");
-    _soDienThoai = in.nextLine();
-    System.out.print("Nhập địa chỉ: ");
-    _diaChi = in.nextLine();
+    while (true) {
+      System.out.print("Nhập họ: ");
+      if (Validator.validateName(s = in.nextLine())) {
+        _ho = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập tên: ");
+      if (Validator.validateName(s = in.nextLine())) {
+        _ten = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập số điện thoại: ");
+      if (Validator.validatePhoneNumber(s = in.nextLine())) {
+        _soDienThoai = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập địa chỉ: ");
+      if (Validator.validateName(s = in.nextLine())) {
+        _diaChi = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
   }
   public void output() {
     System.out.printf("\tMã: %s\n\tHọ tên: %s %s\n\tSố điện thoại: %s\n\tĐịa chỉ: %s\n", _ma, _ho, _ten, _soDienThoai, _diaChi);
   }
   public void edit() {
-    Scanner in = QuanLyCuaHangMayTinh.STANDARD_IN;
     String s;
+    Scanner in = QuanLyCuaHangMayTinh.STANDARD_IN;
     System.out.println(QuanLyCuaHangMayTinh.EDIT_NOTE);
     while (true) {
       System.out.print("Nhập mã khách hàng: ");
-      if ((s = in.nextLine()).isBlank()) break;
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (!Validator.validateID(s)) {
+        System.out.println("Lỗi!");
+        continue;
+      }
       if (!QuanLyCuaHangMayTinh._dsKhachHang.daCo(s)) {
         _ma = s;
         break;
       }
       System.out.println("Lỗi!");
     }
-    System.out.print("Nhập họ: ");
-    if (!(s = in.nextLine()).isBlank()) _ho = s;
-    System.out.print("Nhập tên: ");
-    if (!(s = in.nextLine()).isBlank()) _ten = s;
-    System.out.print("Nhập số điện thoại: ");
-    if (!(s = in.nextLine()).isBlank()) _soDienThoai = s;
-    System.out.print("Nhập địa chỉ: ");
-    if (!(s = in.nextLine()).isBlank()) _diaChi = s;
+    while (true) {
+      System.out.print("Nhập họ: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (Validator.validateName(s)) {
+        _ho = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập tên: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (Validator.validateName(s)) {
+        _ten = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập số điện thoại: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (Validator.validatePhoneNumber(s)) {
+        _soDienThoai = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập địa chỉ: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (Validator.validateName(s)) {
+        _diaChi = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
   }
   public void input(Scanner in) {
     if (_ma.isBlank()) _ma = in.nextLine();

@@ -34,15 +34,45 @@ public abstract class SanPham implements IConsoleIO, IConsoleEditable, IStreamIO
   public void input() {
     Scanner in = QuanLyCuaHangMayTinh.STANDARD_IN;
     if (_ma.isBlank()) {
-      System.out.print("Nhập mã sản phẩm: ");
-      _ma = in.nextLine();
+      while (true) {
+        System.out.print("Nhập mã sản phẩm: ");
+        String s = in.nextLine();
+        if (Validator.validateID(s)) {
+          _ma = s;
+          break;
+        }
+        System.out.println("Lỗi!");
+      }
     }
-    System.out.print("Nhập tên sản phẩm: ");
-    _ten = in.nextLine();
-    System.out.print("Nhập tên nhà sản xuất: ");
-    _tenNSX = in.nextLine();
-    System.out.print("Nhập đơn giá: ");
-    _donGia = Long.parseLong(in.nextLine());
+    while (true) {
+      System.out.print("Nhập tên sản phẩm: ");
+      String s = in.nextLine();
+      if (Validator.validateName(s)) {
+        _ten = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập tên nhà sản xuất: ");
+      String s = in.nextLine();
+      if (Validator.validateName(s)) {
+        _tenNSX = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập đơn giá: ");
+      String s = in.nextLine();
+      try {
+        _donGia = Long.parseLong(s);
+        break;
+      } catch (Throwable e) {
+        QuanLyCuaHangMayTinh.processingInternalThrowable(e);
+        System.out.println("Lỗi!");
+      }
+    }
   }
   public void output() {
     System.out.printf("\tMã: %s\n\tTên: %s\n\tNhà sản xuất: %s\n\tĐơn giá: %d\n\tSố lượng tồn: %d\n", _ma, _ten, _tenNSX, _donGia, _soLuong);
@@ -71,24 +101,51 @@ public abstract class SanPham implements IConsoleIO, IConsoleEditable, IStreamIO
     } catch (Throwable e) { QuanLyCuaHangMayTinh.processingInternalThrowable(e); }
   }
   public void edit() {
-    String v;
+    String s;
     Scanner in = QuanLyCuaHangMayTinh.STANDARD_IN;
     System.out.println(QuanLyCuaHangMayTinh.EDIT_NOTE);
     while (true) {
       System.out.print("Nhập mã sản phẩm: ");
-      if ((v = in.nextLine()).isBlank()) break;
-      if (!QuanLyCuaHangMayTinh._dsSanPham.daCo(v)) {
-        _ma = v;
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (!Validator.validateID(s)) {
+        System.out.println("Lỗi!");
+        continue;
+      }
+      if (!QuanLyCuaHangMayTinh._dsSanPham.daCo(s)) {
+        _ma = s;
         break;
       }
       System.out.println("Lỗi!");
     }
-    System.out.print("Nhập tên sản phẩm: ");
-    if (!(v = in.nextLine()).isBlank()) _ten = v;
-    System.out.print("Nhập tên nhà sản xuất: ");
-    if (!(v = in.nextLine()).isBlank()) _tenNSX = v;
-    System.out.print("Nhập đơn giá: ");
-    if (!(v = in.nextLine()).isBlank()) _donGia = Long.parseLong(v);
+    while (true) {
+      System.out.print("Nhập tên sản phẩm: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (Validator.validateName(s)) {
+        _ten = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập tên nhà sản xuất: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (Validator.validateName(s)) {
+        _tenNSX = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
+    while (true) {
+      System.out.print("Nhập đơn giá: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      try {
+        _donGia = Long.parseLong(s);
+        break;
+      } catch (Throwable e) {
+        QuanLyCuaHangMayTinh.processingInternalThrowable(e);
+        System.out.println("Lỗi!");
+      }
+    }
   }
   public abstract void input(Scanner base, Scanner spec);
   public abstract void output(OutputStreamWriter base, OutputStreamWriter spec);

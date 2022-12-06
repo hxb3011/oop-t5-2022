@@ -36,11 +36,11 @@ public abstract class DateUtil {
         | (((month - 1) << DATE_MONTH_SHIFT) & DATE_MONTH_MASK)
         | (((year - 1800) << DATE_YEAR_SHIFT) & DATE_YEAR_MASK);
   }
-  public static int getVerifyDate(int date) {
+  public static int getVerifiedDate(int date) {
     return getDate(getDayOfDate(date), getMonthOfDate(date), getYearOfDate(date));
   }
   public static String toDateString(int date) {
-    date = getVerifyDate(date);
+    date = getVerifiedDate(date);
     if (date == DATE_ERROR_DATE) return "INVALID";
     else
       return String.format("%02d" + DATE_SEPARATOR + "%02d" + DATE_SEPARATOR + "%d", getDayOfDate(date), getMonthOfDate(date), getYearOfDate(date));

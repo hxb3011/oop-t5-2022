@@ -38,6 +38,10 @@ public class ChiTietPhieuNhapHang implements IConsoleIO, IConsoleEditable, IStre
       while (true) {
         System.out.print("Nhập mã sản phẩm: ");
         String s = in.nextLine();
+        if (!Validator.validateID(s)) {
+          System.out.println("Lỗi!");
+          continue;
+        }
         _sp = dssp.timTheoMa(s);
         if (_sp == null) {
           System.out.println("Thêm sản phẩm mới? (*. Không / 1. Phải): ");
@@ -68,10 +72,26 @@ public class ChiTietPhieuNhapHang implements IConsoleIO, IConsoleEditable, IStre
         break;
       }
     }
-    System.out.println("Nhập đơn giá nhập hàng của sản phẩm: ");
-    _donGia = Integer.parseInt(in.nextLine());
-    System.out.println("Nhập số lượng sản phẩm: ");
-    _soLuong = Integer.parseInt(in.nextLine());
+    while (true) {
+      System.out.println("Nhập đơn giá nhập hàng của sản phẩm: ");
+      try {
+        _donGia = Integer.parseInt(in.nextLine());
+        break;
+      } catch (Throwable e) {
+        QuanLyCuaHangMayTinh.processingInternalThrowable(e);
+        System.out.println("Lỗi!");
+      }
+    }
+    while (true) {
+      System.out.println("Nhập số lượng sản phẩm: ");
+      try {
+        _soLuong = Integer.parseInt(in.nextLine());
+        break;
+      } catch (Throwable e) {
+        QuanLyCuaHangMayTinh.processingInternalThrowable(e);
+        System.out.println("Lỗi!");
+      }
+    }
     _sp.setSoLuong(_sp.getSoLuong() + _soLuong);
     _thanhTien = ((long) _donGia) * _soLuong;
   }
@@ -102,7 +122,11 @@ public class ChiTietPhieuNhapHang implements IConsoleIO, IConsoleEditable, IStre
     while (true) {
       System.out.print("Nhập mã sản phẩm: ");
       String s = in.nextLine();
-      if (s.isBlank()) break;
+      if (s.isEmpty()) break;
+      if (!Validator.validateID(s)) {
+        System.out.println("Lỗi!");
+        continue;
+      }
       SanPham sp = dssp.timTheoMa(s);
       if (sp == null) {
         System.out.println("Thêm sản phẩm mới? (*. Không / 1. Phải): ");
@@ -136,14 +160,34 @@ public class ChiTietPhieuNhapHang implements IConsoleIO, IConsoleEditable, IStre
       break;
     }
     String s;
-    System.out.println("Nhập đơn giá nhập hàng của sản phẩm: ");
-    if (!(s = in.nextLine()).isBlank()) setDonGia(Integer.parseInt(s));
-    System.out.println("Nhập số lượng sản phẩm: ");
-    if (!(s = in.nextLine()).isBlank()) {
-      int soLuongTon = _sp.getSoLuong() - _soLuong;
-      int soLuong = Integer.parseInt(s);
+    while (true) {
+      System.out.println("Nhập đơn giá nhập hàng của sản phẩm: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      int dg;
+      try {
+        dg = Integer.parseInt(s);
+      } catch (Throwable e) {
+        QuanLyCuaHangMayTinh.processingInternalThrowable(e);
+        System.out.println("Lỗi!");
+        continue;
+      }
+      setDonGia(dg);
+      break;
+    }
+    while (true) {
+      System.out.println("Nhập số lượng sản phẩm: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      int soLuongTon = _sp.getSoLuong() - _soLuong, soLuong;
+      try {
+        soLuong = Integer.parseInt(s);
+      } catch (Throwable e) {
+        QuanLyCuaHangMayTinh.processingInternalThrowable(e);
+        System.out.println("Lỗi!");
+        continue;
+      }
       setSoLuong(soLuong);
       _sp.setSoLuong(soLuongTon + soLuong);
+      break;
     }
   }
 }

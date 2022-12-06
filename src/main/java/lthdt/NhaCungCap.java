@@ -20,12 +20,26 @@ public final class NhaCungCap implements IConsoleIO, IConsoleEditable, IStreamIO
 
   public void input() {
     Scanner in = QuanLyCuaHangMayTinh.STANDARD_IN;
-    if (_ma.isBlank()) {
-      System.out.print("Nhập mã nhà cung cấp: ");
-      _ma = in.nextLine();
+    if (_ma.isEmpty()) {
+      while (true) {
+        System.out.print("Nhập mã nhà cung cấp: ");
+        String s = in.nextLine();
+        if (Validator.validateID(s)) {
+          _ma = s;
+          break;
+        }
+        System.out.println("Lỗi!");
+      }
     }
-    System.out.print("Nhập tên nhà cung cấp: ");
-    _ten = in.nextLine();
+    while (true) {
+      System.out.print("Nhập tên nhà cung cấp: ");
+      String s = in.nextLine();
+      if (Validator.validateName(s)) {
+        _ten = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
   }
   public void output() {
     System.out.printf("\tMã: %s\n\tTên: %s\n", _ma, _ten);
@@ -36,15 +50,26 @@ public final class NhaCungCap implements IConsoleIO, IConsoleEditable, IStreamIO
     System.out.println(QuanLyCuaHangMayTinh.EDIT_NOTE);
     while (true) {
       System.out.print("Nhập mã nhà cung cấp: ");
-      if ((s = in.nextLine()).isBlank()) break;
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (!Validator.validateID(s)) {
+        System.out.println("Lỗi!");
+        continue;
+      }
       if (!QuanLyCuaHangMayTinh._dsNhaCungCap.daCo(s)) {
         _ma = s;
         break;
       }
       System.out.println("Lỗi!");
     }
-    System.out.print("Nhập tên nhà cung cấp: ");
-    if (!(s = in.nextLine()).isBlank()) _ten = s;
+    while (true) {
+      System.out.print("Nhập tên nhà cung cấp: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (Validator.validateName(s)) {
+        _ten = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
   }
   public void input(Scanner in) {
     if (_ma.isBlank()) _ma = in.nextLine();

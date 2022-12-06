@@ -37,8 +37,15 @@ public final class Laptop extends SanPham {
     super.input();
     _chiTiet.input();
     Scanner in = QuanLyCuaHangMayTinh.STANDARD_IN;
-    System.out.print("Nhập chất lượng loa: ");
-    _chatLuongLoa = in.nextLine();
+    while (true) {
+      System.out.print("Nhập chất lượng loa: ");
+      String s = in.nextLine();
+      if (Validator.validateName(s)) {
+        _chatLuongLoa = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
     while (true) {
       System.out.print("Sản phẩm có màn hình cảm ứng không? (0. Không, 1. Có): ");
       String s = in.nextLine();
@@ -83,11 +90,18 @@ public final class Laptop extends SanPham {
     String s;
     Scanner in = QuanLyCuaHangMayTinh.STANDARD_IN;
     System.out.println(QuanLyCuaHangMayTinh.EDIT_NOTE);
-    System.out.print("Nhập chất lượng loa: ");
-    if (!(s = in.nextLine()).isBlank()) _chatLuongLoa = s;
+    while (true) {
+      System.out.print("Nhập chất lượng loa: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (Validator.validateName(s)) {
+        _chatLuongLoa = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
     while (true) {
       System.out.print("Sản phẩm có màn hình cảm ứng không? (0. Không, 1. Có): ");
-      if ((s = in.nextLine()).isBlank()) break;
+      if ((s = in.nextLine()).isEmpty()) break;
       if (s.length() == 1) {
         char c = s.charAt(0);
         if (c == '0') {
@@ -102,7 +116,7 @@ public final class Laptop extends SanPham {
     }
     while (true) {
       System.out.print("Sản phẩm có LED bàn phím không? (0. Không, 1. Có): ");
-      if ((s = in.nextLine()).isBlank()) break;
+      if ((s = in.nextLine()).isEmpty()) break;
       if (s.length() == 1) {
         char c = s.charAt(0);
         if (c == '0') {

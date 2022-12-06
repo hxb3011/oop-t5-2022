@@ -31,8 +31,15 @@ public final class MayTinhBan extends SanPham {
     _chiTiet.input();
 
     Scanner in = QuanLyCuaHangMayTinh.STANDARD_IN;
-    System.out.print("Nhập phụ kiện: ");
-    _phuKien = in.nextLine();
+    while (true) {
+      System.out.print("Nhập phụ kiện: ");
+      String s = in.nextLine();
+      if (Validator.validateName(s)) {
+        _phuKien = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
   }
   public void output() {
     super.output();
@@ -46,8 +53,15 @@ public final class MayTinhBan extends SanPham {
     String s;
     Scanner in = QuanLyCuaHangMayTinh.STANDARD_IN;
     System.out.println(QuanLyCuaHangMayTinh.EDIT_NOTE);
-    System.out.print("Nhập phụ kiện: ");
-    if (!(s = in.nextLine()).isBlank()) _phuKien = s;
+    while (true) {
+      System.out.print("Nhập phụ kiện: ");
+      if ((s = in.nextLine()).isEmpty()) break;
+      if (Validator.validateName(s)) {
+        _phuKien = s;
+        break;
+      }
+      System.out.println("Lỗi!");
+    }
   }
   private void inputSpec(Scanner in) {
     _phuKien = in.nextLine();
