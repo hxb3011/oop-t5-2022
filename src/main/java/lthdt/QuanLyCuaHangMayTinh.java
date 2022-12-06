@@ -21,8 +21,78 @@ public abstract class QuanLyCuaHangMayTinh {
   private static void menuDanhSachHoaDon() {
 
   }
+  private static void xuatTimKiemDanhSachNhaCungCap(NhaCungCap[] ncc) {
+    if (ncc.length != 0) {
+      if (ncc.length == 1) {
+        ncc[0].output();
+      } else {
+        System.out.printf("%-10s %-30s \n", "Mã", "Tên");
+        for (NhaCungCap ncci : ncc)
+          System.out.printf("%-10s %-30s \n", ncci.getMa(), ncci.getTen());
+      }
+    }
+  }
   private static void menuDanhSachNhaCungCap() {
-
+    while (true) {
+      System.out.println();
+      System.out.println("+--------------------------- DANH SÁCH NHÀ CUNG CẤP ---------------------------+");
+      System.out.println("|  1:             Sửa                                                          |");
+      System.out.println("|  2:             Tìm kiếm theo mã                                             |");
+      System.out.println("|  3:             Tìm kiếm theo tên                                            |");
+      System.out.println("|  4:             Xem                                                          |");
+      System.out.println("|  *:             Trở về menu quản lý                                          |");
+      System.out.println("+------------------------------------------------------------------------------+");
+      System.out.print("> ");
+      String s = STANDARD_IN.nextLine();
+      if (s.length() == 1) {
+        char c = s.charAt(0);
+        if (c == '1') {
+          while (true) {
+            System.out.print("Nhập mã nhà cung cấp: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              NhaCungCap ncc = _dsNhaCungCap.timTheoMa(s);
+              if (ncc != null) {
+                ncc.edit();
+                break;
+              }
+            }
+            System.out.println("Lỗi!");
+          }
+          saveDatabase();
+        } else if (c == '2') {
+          while (true) {
+            System.out.print("Nhập mã nhà cung cấp: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              NhaCungCap ncc = _dsNhaCungCap.timTheoMa(s);
+              if (ncc == null) {
+                System.out.println("Không tìm thấy nhà cung cấp có mã: " + s);
+              } else {
+                ncc.output();
+              }
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '3') {
+          while (true) {
+            System.out.print("Nhập tên nhà cung cấp: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              NhaCungCap[] ncc = _dsNhaCungCap.timTheoTen(s);
+              if (ncc.length == 0) {
+                System.out.println("Không tìm thấy nhà cung cấp có tên chứa: " + s);
+              } else xuatTimKiemDanhSachNhaCungCap(ncc);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '4') {
+          _dsNhaCungCap.output();
+        } else break;
+      } else break;
+    }
   }
   private static void xuatTimKiemDanhSachKhachHang(KhachHang[] kh) {
     if (kh.length != 0) {
@@ -59,9 +129,9 @@ public abstract class QuanLyCuaHangMayTinh {
             System.out.print("Nhập mã khách hàng: ");
             s = STANDARD_IN.nextLine();
             if (Validator.validateID(s)) {
-              KhachHang nv = _dsKhachHang.timTheoMa(s);
-              if (nv != null) {
-                nv.edit();
+              KhachHang kh = _dsKhachHang.timTheoMa(s);
+              if (kh != null) {
+                kh.edit();
                 break;
               }
             }
@@ -73,11 +143,11 @@ public abstract class QuanLyCuaHangMayTinh {
             System.out.print("Nhập mã khách hàng: ");
             s = STANDARD_IN.nextLine();
             if (Validator.validateID(s)) {
-              KhachHang nv = _dsKhachHang.timTheoMa(s);
-              if (nv == null) {
+              KhachHang kh = _dsKhachHang.timTheoMa(s);
+              if (kh == null) {
                 System.out.println("Không tìm thấy khách hàng có mã: " + s);
               } else {
-                nv.output();
+                kh.output();
               }
               break;
             }
@@ -88,10 +158,10 @@ public abstract class QuanLyCuaHangMayTinh {
             System.out.print("Nhập họ khách hàng: ");
             s = STANDARD_IN.nextLine();
             if (Validator.validateName(s)) {
-              KhachHang[] nv = _dsKhachHang.timTheoHo(s);
-              if (nv.length == 0) {
+              KhachHang[] kh = _dsKhachHang.timTheoHo(s);
+              if (kh.length == 0) {
                 System.out.println("Không tìm thấy khách hàng có họ chứa: " + s);
-              } else xuatTimKiemDanhSachKhachHang(nv);
+              } else xuatTimKiemDanhSachKhachHang(kh);
               break;
             }
             System.out.println("Lỗi!");
@@ -101,10 +171,10 @@ public abstract class QuanLyCuaHangMayTinh {
             System.out.print("Nhập tên khách hàng: ");
             s = STANDARD_IN.nextLine();
             if (Validator.validateName(s)) {
-              KhachHang[] nv = _dsKhachHang.timTheoTen(s);
-              if (nv.length == 0) {
+              KhachHang[] kh = _dsKhachHang.timTheoTen(s);
+              if (kh.length == 0) {
                 System.out.println("Không tìm thấy khách hàng có tên chứa: " + s);
-              } else xuatTimKiemDanhSachKhachHang(nv);
+              } else xuatTimKiemDanhSachKhachHang(kh);
               break;
             }
             System.out.println("Lỗi!");
@@ -114,10 +184,10 @@ public abstract class QuanLyCuaHangMayTinh {
             System.out.print("Nhập họ và tên khách hàng: ");
             s = STANDARD_IN.nextLine();
             if (Validator.validateName(s)) {
-              KhachHang[] nv = _dsKhachHang.timTheoHoTen(s);
-              if (nv.length == 0) {
+              KhachHang[] kh = _dsKhachHang.timTheoHoTen(s);
+              if (kh.length == 0) {
                 System.out.println("Không tìm thấy khách hàng có họ và tên chứa: " + s);
-              } else xuatTimKiemDanhSachKhachHang(nv);
+              } else xuatTimKiemDanhSachKhachHang(kh);
               break;
             }
             System.out.println("Lỗi!");
@@ -127,10 +197,10 @@ public abstract class QuanLyCuaHangMayTinh {
             System.out.print("Nhập số điện thoại của khách hàng: ");
             s = STANDARD_IN.nextLine();
             if (Validator.validateName(s)) {
-              KhachHang[] nv = _dsKhachHang.timTheoSoDienThoai(s);
-              if (nv.length == 0) {
+              KhachHang[] kh = _dsKhachHang.timTheoSoDienThoai(s);
+              if (kh.length == 0) {
                 System.out.println("Không tìm thấy khách hàng có số điện thoại chứa: " + s);
-              } else xuatTimKiemDanhSachKhachHang(nv);
+              } else xuatTimKiemDanhSachKhachHang(kh);
               break;
             }
             System.out.println("Lỗi!");
@@ -140,10 +210,10 @@ public abstract class QuanLyCuaHangMayTinh {
             System.out.print("Nhập địa chỉ của khách hàng: ");
             s = STANDARD_IN.nextLine();
             if (Validator.validateName(s)) {
-              KhachHang[] nv = _dsKhachHang.timTheoDiaChi(s);
-              if (nv.length == 0) {
+              KhachHang[] kh = _dsKhachHang.timTheoDiaChi(s);
+              if (kh.length == 0) {
                 System.out.println("Không tìm thấy khách hàng có địa chỉ chứa: " + s);
-              } else xuatTimKiemDanhSachKhachHang(nv);
+              } else xuatTimKiemDanhSachKhachHang(kh);
               break;
             }
             System.out.println("Lỗi!");
@@ -469,7 +539,7 @@ public abstract class QuanLyCuaHangMayTinh {
     }
   }
   private static void menuDanhSachSanPham() {
-    
+
   }
   private static void menuQuanLy() {
     while (true) {
