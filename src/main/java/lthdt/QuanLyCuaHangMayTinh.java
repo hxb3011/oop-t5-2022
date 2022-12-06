@@ -24,7 +24,137 @@ public abstract class QuanLyCuaHangMayTinh {
   private static void menuDanhSachNhaCungCap() {
 
   }
+  private static void xuatTimKiemDanhSachKhachHang(KhachHang[] kh) {
+    if (kh.length != 0) {
+      if (kh.length == 1) {
+        kh[0].output();
+      } else {
+        System.out.printf("%-10s %-30s %-11s %30s \n", "Mã", "Họ tên", "Số điện thoại", "Địa chỉ");
+        for (KhachHang khi : kh)
+          System.out.printf("%-10s %-30s %-11s %30s \n", khi.getMa(), khi.getHoTen(), khi.getSoDienThoai(), khi.getDiaChi());
+      }
+    }
+  }
   private static void menuDanhSachKhachHang() {
+    while (true) {
+      System.out.println();
+      System.out.println("+---------------------------- DANH SÁCH KHÁCH HÀNG ----------------------------+");
+      System.out.println("|  1:             Sửa                                                          |");
+      System.out.println("|  2:             Tìm kiếm theo mã                                             |");
+      System.out.println("|  3:             Tìm kiếm theo họ                                             |");
+      System.out.println("|  4:             Tìm kiếm theo tên                                            |");
+      System.out.println("|  5:             Tìm kiếm theo họ và tên                                      |");
+      System.out.println("|  6:             Tìm kiếm theo số điện thoại                                  |");
+      System.out.println("|  7:             Tìm kiếm theo địa chỉ                                        |");
+      System.out.println("|  8:             Thống kê số khách hàng theo địa chỉ                          |");
+      System.out.println("|  9:             Xem                                                          |");
+      System.out.println("|  *:             Trở về menu quản lý                                          |");
+      System.out.println("+------------------------------------------------------------------------------+");
+      System.out.print("> ");
+      String s = STANDARD_IN.nextLine();
+      if (s.length() == 1) {
+        char c = s.charAt(0);
+        if (c == '1') {
+          while (true) {
+            System.out.print("Nhập mã khách hàng: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              KhachHang nv = _dsKhachHang.timTheoMa(s);
+              if (nv != null) {
+                nv.edit();
+                break;
+              }
+            }
+            System.out.println("Lỗi!");
+          }
+          saveDatabase();
+        } else if (c == '2') {
+          while (true) {
+            System.out.print("Nhập mã khách hàng: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              KhachHang nv = _dsKhachHang.timTheoMa(s);
+              if (nv == null) {
+                System.out.println("Không tìm thấy khách hàng có mã: " + s);
+              } else {
+                nv.output();
+              }
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '3') {
+          while (true) {
+            System.out.print("Nhập họ khách hàng: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              KhachHang[] nv = _dsKhachHang.timTheoHo(s);
+              if (nv.length == 0) {
+                System.out.println("Không tìm thấy khách hàng có họ chứa: " + s);
+              } else xuatTimKiemDanhSachKhachHang(nv);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '4') {
+          while (true) {
+            System.out.print("Nhập tên khách hàng: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              KhachHang[] nv = _dsKhachHang.timTheoTen(s);
+              if (nv.length == 0) {
+                System.out.println("Không tìm thấy khách hàng có tên chứa: " + s);
+              } else xuatTimKiemDanhSachKhachHang(nv);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '5') {
+          while (true) {
+            System.out.print("Nhập họ và tên khách hàng: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              KhachHang[] nv = _dsKhachHang.timTheoHoTen(s);
+              if (nv.length == 0) {
+                System.out.println("Không tìm thấy khách hàng có họ và tên chứa: " + s);
+              } else xuatTimKiemDanhSachKhachHang(nv);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '6') {
+          while (true) {
+            System.out.print("Nhập số điện thoại của khách hàng: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              KhachHang[] nv = _dsKhachHang.timTheoSoDienThoai(s);
+              if (nv.length == 0) {
+                System.out.println("Không tìm thấy khách hàng có số điện thoại chứa: " + s);
+              } else xuatTimKiemDanhSachKhachHang(nv);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '7') {
+          while (true) {
+            System.out.print("Nhập địa chỉ của khách hàng: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              KhachHang[] nv = _dsKhachHang.timTheoDiaChi(s);
+              if (nv.length == 0) {
+                System.out.println("Không tìm thấy khách hàng có địa chỉ chứa: " + s);
+              } else xuatTimKiemDanhSachKhachHang(nv);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '8') {
+          _dsKhachHang.thongKeSoKhachHangTheoDiaChi();
+        } else if (c == '9') {
+          _dsKhachHang.output();
+        } else break;
+      } else break;
+    }
   }
   private static void xuatTimKiemDanhSachNhanVien(NhanVien[] nv) {
     if (nv.length != 0) {
@@ -44,7 +174,7 @@ public abstract class QuanLyCuaHangMayTinh {
       System.out.println("|  1:             Theo mã                                                      |");
       System.out.println("|  2:             Theo họ                                                      |");
       System.out.println("|  3:             Theo tên                                                     |");
-      System.out.println("|  4:             Theo họ tên                                                  |");
+      System.out.println("|  4:             Theo họ và tên                                                  |");
       System.out.println("|  5:             Theo số điện thoại                                           |");
       System.out.println("|  6:             Theo mức lương                                               |");
       System.out.println("|  7:             Theo khoảng lương                                            |");
@@ -283,6 +413,7 @@ public abstract class QuanLyCuaHangMayTinh {
             }
             System.out.println("Lỗi!");
           }
+          saveDatabase();
         } else if (c == '2') {
           while (true) {
             System.out.print("Nhập mã nhân viên: ");
@@ -296,6 +427,7 @@ public abstract class QuanLyCuaHangMayTinh {
             }
             System.out.println("Lỗi!");
           }
+          saveDatabase();
         } else if (c == '3') {
           while (true) {
             System.out.print("Nhập mã nhân viên: ");
@@ -305,6 +437,7 @@ public abstract class QuanLyCuaHangMayTinh {
             }
             System.out.println("Lỗi!");
           }
+          saveDatabase();
         } else if (c == '4') {
           menuTimKiemDanhSachNhanVien();
         } else if (c == '5') {
@@ -329,14 +462,14 @@ public abstract class QuanLyCuaHangMayTinh {
               _dsNhanVien.input(n);
               break;
             }
+            saveDatabase();
           }
         } else break;
-        saveDatabase();
       } else break;
     }
   }
   private static void menuDanhSachSanPham() {
-
+    
   }
   private static void menuQuanLy() {
     while (true) {
