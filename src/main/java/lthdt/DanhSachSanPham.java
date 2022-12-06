@@ -360,7 +360,11 @@ public final class DanhSachSanPham implements IListConsoleIO, IListFileIO {
     while (true) {
       System.out.print("\nNhập mã sản phẩm để xem chi tiết (Bỏ qua để thoát): ");
       String s = QuanLyCuaHangMayTinh.STANDARD_IN.nextLine();
-      if (s.isBlank()) break;
+      if (s.isEmpty()) break;
+      if (!Validator.validateID(s)) {
+        System.out.println("Lỗi!");
+        continue;
+      }
       SanPham sp = QuanLyCuaHangMayTinh._dsSanPham.timTheoMa(s);
       if (sp instanceof MayTinhBan) {
         System.out.println("Máy tính để bàn: ");

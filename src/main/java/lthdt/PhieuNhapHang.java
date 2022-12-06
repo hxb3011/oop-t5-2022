@@ -62,7 +62,7 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
   }
   public void input() {
     Scanner in = QuanLyCuaHangMayTinh.STANDARD_IN;
-    if (_ma.isBlank()) {
+    if (_ma.isEmpty()) {
       while (true) {
         System.out.print("Nhập mã phiếu nhập hàng: ");
         String s = in.nextLine();

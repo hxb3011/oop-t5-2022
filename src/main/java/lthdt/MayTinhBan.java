@@ -93,7 +93,7 @@ public final class MayTinhBan extends SanPham {
     _chiTiet.input(base);
 
     String s = spec.nextLine();
-    if (getMa().isBlank()) setMa(s);
+    if (getMa().isEmpty()) setMa(s);
     inputSpec(spec);
   }
   public void output(OutputStreamWriter base, OutputStreamWriter spec) {

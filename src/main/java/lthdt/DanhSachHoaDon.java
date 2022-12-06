@@ -382,7 +382,11 @@ public class DanhSachHoaDon implements IListConsoleIO, IListFileIO {
     while (true) {
       System.out.print("\nNhập mã hoá đơn để xem chi tiết (Bỏ qua để thoát): ");
       String s = QuanLyCuaHangMayTinh.STANDARD_IN.nextLine();
-      if (s.isBlank()) break;
+      if (s.isEmpty()) break;
+      if (!Validator.validateID(s)) {
+        System.out.println("Lỗi!");
+        continue;
+      }
       HoaDon hd = QuanLyCuaHangMayTinh._dsHoaDon.timTheoMa(s);
       if (hd != null) hd.output();
       else System.out.println("Lỗi!");

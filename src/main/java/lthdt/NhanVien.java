@@ -36,7 +36,7 @@ public final class NhanVien implements IConsoleIO, IConsoleEditable, IStreamIO {
   public void setNamVaoLam(int namVaoLam) { _namVaoLam = namVaoLam; }
   public void input() {
     Scanner in = QuanLyCuaHangMayTinh.STANDARD_IN;
-    if (_ma.isBlank()) {
+    if (_ma.isEmpty()) {
       while (true) {
         System.out.print("Nhập mã nhân viên: ");
         String s = in.nextLine();
@@ -169,7 +169,7 @@ public final class NhanVien implements IConsoleIO, IConsoleEditable, IStreamIO {
     }
   }
   public void input(Scanner in) {
-    if (_ma.isBlank()) _ma = in.nextLine();
+    if (_ma.isEmpty()) _ma = in.nextLine();
     _ho = in.nextLine();
     _ten = in.nextLine();
     _soDienThoai = in.nextLine();

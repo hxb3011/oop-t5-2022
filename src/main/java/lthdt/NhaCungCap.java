@@ -72,7 +72,7 @@ public final class NhaCungCap implements IConsoleIO, IConsoleEditable, IStreamIO
     }
   }
   public void input(Scanner in) {
-    if (_ma.isBlank()) _ma = in.nextLine();
+    if (_ma.isEmpty()) _ma = in.nextLine();
     _ten = in.nextLine();
   }
   public void output(OutputStreamWriter out) {

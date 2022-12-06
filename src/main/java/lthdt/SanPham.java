@@ -33,7 +33,7 @@ public abstract class SanPham implements IConsoleIO, IConsoleEditable, IStreamIO
   public void setTenNhaSanXuat(String ten) { _tenNSX = ten; }
   public void input() {
     Scanner in = QuanLyCuaHangMayTinh.STANDARD_IN;
-    if (_ma.isBlank()) {
+    if (_ma.isEmpty()) {
       while (true) {
         System.out.print("Nhập mã sản phẩm: ");
         String s = in.nextLine();
@@ -78,7 +78,7 @@ public abstract class SanPham implements IConsoleIO, IConsoleEditable, IStreamIO
     System.out.printf("\tMã: %s\n\tTên: %s\n\tNhà sản xuất: %s\n\tĐơn giá: %d\n\tSố lượng tồn: %d\n", _ma, _ten, _tenNSX, _donGia, _soLuong);
   }
   public void input(Scanner in) {
-    if (_ma.isBlank()) _ma = in.nextLine();
+    if (_ma.isEmpty()) _ma = in.nextLine();
     _ten = in.nextLine();
     _tenNSX = in.nextLine();
     _donGia = Long.parseLong(in.nextLine());

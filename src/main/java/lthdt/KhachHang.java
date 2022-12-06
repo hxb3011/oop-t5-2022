@@ -134,7 +134,7 @@ public final class KhachHang implements IConsoleIO, IConsoleEditable, IStreamIO 
     }
   }
   public void input(Scanner in) {
-    if (_ma.isBlank()) _ma = in.nextLine();
+    if (_ma.isEmpty()) _ma = in.nextLine();
     _ho = in.nextLine();
     _ten = in.nextLine();
     _soDienThoai = in.nextLine();

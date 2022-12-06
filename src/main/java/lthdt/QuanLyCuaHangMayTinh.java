@@ -3,6 +3,7 @@ package lthdt;
 import java.util.Scanner;
 
 public abstract class QuanLyCuaHangMayTinh {
+  private QuanLyCuaHangMayTinh() { }
   public static final Scanner STANDARD_IN = new Scanner(System.in);
   public static final String EDIT_NOTE = "<* Bỏ qua những mục không thay đổi *>";
   public static boolean _debugMode = false;
@@ -25,8 +26,314 @@ public abstract class QuanLyCuaHangMayTinh {
   }
   private static void menuDanhSachKhachHang() {
   }
+  private static void xuatTimKiemDanhSachNhanVien(NhanVien[] nv) {
+    if (nv.length != 0) {
+      if (nv.length == 1) {
+        nv[0].output();
+      } else {
+        System.out.printf("%-10s %-30s %-11s %-15s %-10s \n", "Mã", "Họ tên", "Số điện thoại", "Mức lương", "Năm vào làm");
+        for (NhanVien nvi : nv)
+          System.out.printf("%-10s %-30s %-11s %-15d %-10d \n", nvi.getMa(), nvi.getHoTen(), nvi.getSoDienThoai(), nvi.getMucLuong(), nvi.getNamVaoLam());
+      }
+    }
+  }
+  private static void menuTimKiemDanhSachNhanVien() {
+    while (true) {
+      System.out.println();
+      System.out.println("+----------------------- DANH SÁCH NHÂN VIÊN > TÌM KIẾM -----------------------+");
+      System.out.println("|  1:             Theo mã                                                      |");
+      System.out.println("|  2:             Theo họ                                                      |");
+      System.out.println("|  3:             Theo tên                                                     |");
+      System.out.println("|  4:             Theo họ tên                                                  |");
+      System.out.println("|  5:             Theo số điện thoại                                           |");
+      System.out.println("|  6:             Theo mức lương                                               |");
+      System.out.println("|  7:             Theo khoảng lương                                            |");
+      System.out.println("|  8:             Theo năm vào làm                                             |");
+      System.out.println("|  9:             Theo khoảng năm vào làm                                      |");
+      System.out.println("|  *:             Trở về menu danh sách                                        |");
+      System.out.println("+------------------------------------------------------------------------------+");
+      System.out.print("> ");
+      String s = STANDARD_IN.nextLine();
+      if (s.length() == 1) {
+        char c = s.charAt(0);
+        if (c == '1') {
+          while (true) {
+            System.out.print("Nhập mã nhân viên: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              NhanVien nv = _dsNhanVien.timTheoMa(s);
+              if (nv == null) {
+                System.out.println("Không tìm thấy nhân viên có mã: " + s);
+              } else {
+                nv.output();
+              }
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '2') {
+          while (true) {
+            System.out.print("Nhập họ nhân viên: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              NhanVien[] nv = _dsNhanVien.timTheoHo(s);
+              if (nv.length == 0) {
+                System.out.println("Không tìm thấy nhân viên có họ chứa: " + s);
+              } else xuatTimKiemDanhSachNhanVien(nv);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '3') {
+          while (true) {
+            System.out.print("Nhập tên nhân viên: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              NhanVien[] nv = _dsNhanVien.timTheoTen(s);
+              if (nv.length == 0) {
+                System.out.println("Không tìm thấy nhân viên có tên chứa: " + s);
+              } else xuatTimKiemDanhSachNhanVien(nv);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '4') {
+          while (true) {
+            System.out.print("Nhập họ và tên nhân viên: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              NhanVien[] nv = _dsNhanVien.timTheoHoTen(s);
+              if (nv.length == 0) {
+                System.out.println("Không tìm thấy nhân viên có họ và tên chứa: " + s);
+              } else xuatTimKiemDanhSachNhanVien(nv);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '5') {
+          while (true) {
+            System.out.print("Nhập số điện thoại của nhân viên: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              NhanVien[] nv = _dsNhanVien.timTheoSoDienThoai(s);
+              if (nv.length == 0) {
+                System.out.println("Không tìm thấy nhân viên có số điện thoại chứa: " + s);
+              } else xuatTimKiemDanhSachNhanVien(nv);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '6') {
+          while (true) {
+            System.out.print("Nhập mức lương của nhân viên: ");
+            int luong;
+            try {
+              luong = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            NhanVien[] nv = _dsNhanVien.timTheoMucLuong(luong);
+            if (nv.length == 0) {
+              System.out.println("Không tìm thấy nhân viên có mức lương: " + luong);
+            } else xuatTimKiemDanhSachNhanVien(nv);
+            break;
+          }
+        } else if (c == '7') {
+          while (true) {
+            System.out.print("Nhập giới hạn dưới khoảng lương của nhân viên: ");
+            int duoi;
+            try {
+              duoi = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            if (duoi < 0) {
+              System.out.println("Lỗi!");
+              continue;
+            }
+            System.out.print("Nhập giới hạn trên khoảng lương của nhân viên: ");
+            int tren;
+            try {
+              tren = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            if (tren < 0) {
+              System.out.println("Lỗi!");
+              continue;
+            }
+            NhanVien[] nv = _dsNhanVien.timTheoKhoangLuong(duoi, tren);
+            if (nv.length == 0) {
+              System.out.println("Không tìm thấy nhân viên có khoảng lương: " + duoi + "-" + tren);
+            } else xuatTimKiemDanhSachNhanVien(nv);
+            break;
+          }
+        } else if (c == '8') {
+          while (true) {
+            System.out.print("Nhập năm vào làm của nhân viên: ");
+            int nam;
+            try {
+              nam = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            NhanVien[] nv = _dsNhanVien.timTheoNamVaoLam(nam);
+            if (nv.length == 0) {
+              System.out.println("Không tìm thấy nhân viên có năm vào làm: " + nam);
+            } else xuatTimKiemDanhSachNhanVien(nv);
+            break;
+          }
+        } else if (c == '9') {
+          while (true) {
+            System.out.print("Nhập giới hạn dưới khoảng năm vào làm của nhân viên: ");
+            int duoi;
+            try {
+              duoi = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            if (duoi < 0) {
+              System.out.println("Lỗi!");
+              continue;
+            }
+            System.out.print("Nhập giới hạn trên khoảng năm vào làm của nhân viên: ");
+            int tren;
+            try {
+              tren = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            if (tren < 0) {
+              System.out.println("Lỗi!");
+              continue;
+            }
+            NhanVien[] nv = _dsNhanVien.timTheoKhoangLuong(duoi, tren);
+            if (nv.length == 0) {
+              System.out.println("Không tìm thấy nhân viên có khoảng năm vào làm: " + duoi + "-" + tren);
+            } else xuatTimKiemDanhSachNhanVien(nv);
+            break;
+          }
+        } else break;
+      } else break;
+    }
+  }
+  private static void menuThongKeDanhSachNhanVien() {
+    while (true) {
+      System.out.println();
+      System.out.println("+----------------------- DANH SÁCH NHÂN VIÊN > THỐNG KÊ -----------------------+");
+      System.out.println("|  1:             Số nhân viên theo mức lương                                  |");
+      System.out.println("|  2:             Số nhân viên theo năm vào làm                                |");
+      System.out.println("|  *:             Trở về menu danh sách                                        |");
+      System.out.println("+------------------------------------------------------------------------------+");
+      System.out.print("> ");
+      String s = STANDARD_IN.nextLine();
+      if (s.length() == 1) {
+        char c = s.charAt(0);
+        if (c == '1') {
+          _dsNhanVien.thongKeSoNhanVienTheoMucLuong();
+        } else if (c == '2') {
+          _dsNhanVien.thongKeSoNhanVienTheoNamVaoLam();
+        } else break;
+      } else break;
+    }
+  }
   private static void menuDanhSachNhanVien() {
-
+    while (true) {
+      System.out.println();
+      System.out.println("+---------------------------- DANH SÁCH NHÂN VIÊN -----------------------------+");
+      System.out.println("|  1:             Thêm                                                         |");
+      System.out.println("|  2:             Sửa                                                          |");
+      System.out.println("|  3:             Xoá                                                          |");
+      System.out.println("|  4:             Tìm kiếm                                                     |");
+      System.out.println("|  5:             Thống kê                                                     |");
+      if (_dsNhanVien.soLuong() > 0)
+        System.out.println("|  6:             Xem                                                          |");
+      else
+        System.out.println("|  6:             Nhập nhiều                                                   |");
+      System.out.println("|  *:             Trở về menu quản lý                                          |");
+      System.out.println("+------------------------------------------------------------------------------+");
+      System.out.print("> ");
+      String s = STANDARD_IN.nextLine();
+      if (s.length() == 1) {
+        char c = s.charAt(0);
+        if (c == '1') {
+          while (true) {
+            System.out.print("Nhập mã nhân viên: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              if (!_dsNhanVien.daCo(s)) {
+                NhanVien nv = new NhanVien();
+                nv.setMa(s);
+                nv.input();
+                _dsNhanVien.add(nv);
+                break;
+              }
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '2') {
+          while (true) {
+            System.out.print("Nhập mã nhân viên: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              NhanVien nv = _dsNhanVien.timTheoMa(s);
+              if (nv != null) {
+                nv.edit();
+                break;
+              }
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '3') {
+          while (true) {
+            System.out.print("Nhập mã nhân viên: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              if (_dsNhanVien.xoaTheoMa(s)) break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '4') {
+          menuTimKiemDanhSachNhanVien();
+        } else if (c == '5') {
+          menuThongKeDanhSachNhanVien();
+        } else if (c == '6') {
+          if (_dsNhanVien.soLuong() > 0) {
+            _dsNhanVien.output();
+          } else {
+            int n;
+            while (true) {
+              try {
+                n = Integer.parseInt(STANDARD_IN.nextLine());
+              } catch (Throwable e) {
+                processingInternalThrowable(e);
+                System.out.println("Lỗi!");
+                continue;
+              }
+              if (n < 0) {
+                System.out.println("Lỗi!");
+                continue;
+              }
+              _dsNhanVien.input(n);
+              break;
+            }
+          }
+        } else break;
+        saveDatabase();
+      } else break;
+    }
   }
   private static void menuDanhSachSanPham() {
 
@@ -54,6 +361,7 @@ public abstract class QuanLyCuaHangMayTinh {
         else if (c == '5') menuDanhSachHoaDon();
         else if (c == '6') menuDanhSachPhieuNhapHang();
         else break;
+        saveDatabase();
       } else break;
     }
   }
@@ -194,7 +502,6 @@ public abstract class QuanLyCuaHangMayTinh {
       System.exit(-1);
     });
   }
-  private QuanLyCuaHangMayTinh() { }
   public static void main(String[] args) {
     configure(args);
     loadDatabase();

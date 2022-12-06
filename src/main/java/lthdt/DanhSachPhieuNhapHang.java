@@ -366,7 +366,11 @@ public class DanhSachPhieuNhapHang implements IListConsoleIO, IListFileIO {
     while (true) {
       System.out.print("\nNhập mã phiếu nhập hàng để xem chi tiết (Bỏ qua để thoát): ");
       String s = QuanLyCuaHangMayTinh.STANDARD_IN.nextLine();
-      if (s.isBlank()) break;
+      if (s.isEmpty()) break;
+      if (!Validator.validateID(s)) {
+        System.out.println("Lỗi!");
+        continue;
+      }
       PhieuNhapHang pnh = QuanLyCuaHangMayTinh._dsPhieuNhapHang.timTheoMa(s);
       if (pnh != null) pnh.output();
       else System.out.println("Lỗi!");
