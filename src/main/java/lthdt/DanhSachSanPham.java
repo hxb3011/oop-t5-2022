@@ -3,7 +3,6 @@ package lthdt;
 import java.io.*;
 import java.util.*;
 
-@SuppressWarnings("unused")
 public final class DanhSachSanPham implements IListConsoleIO, IListFileIO {
   private int _soLuong;
   private SanPham[] _array;
@@ -22,6 +21,20 @@ public final class DanhSachSanPham implements IListConsoleIO, IListFileIO {
   }
   public boolean laMayTinhBan(String ma) { return timTheoMa(ma) instanceof MayTinhBan; }
   public boolean laLaptop(String ma) { return timTheoMa(ma) instanceof Laptop; }
+  public MayTinhBan[] timMayTinhBan() {
+    int n = _soLuong, k = 0;
+    MayTinhBan[] sp = new MayTinhBan[n];
+    for (int i = 0 ; i < n ; ++i)
+      if (_array[i] instanceof MayTinhBan) sp[k++] = (MayTinhBan) _array[i];
+    return Arrays.copyOf(sp, k);
+  }
+  public Laptop[] timLaptop() {
+    int n = _soLuong, k = 0;
+    Laptop[] sp = new Laptop[n];
+    for (int i = 0 ; i < n ; ++i)
+      if (_array[i] instanceof Laptop) sp[k++] = (Laptop) _array[i];
+    return Arrays.copyOf(sp, k);
+  }
   public SanPham[] timTheoTen(String ten) {
     ten = ten.toLowerCase();
     int n = _soLuong, k = 0;
@@ -340,7 +353,7 @@ public final class DanhSachSanPham implements IListConsoleIO, IListFileIO {
         sp = new Laptop();
       } else {
         // throw new UnsupportedOperationException("Impossible!");
-        System.out.println("Lỗi không xác định");
+        System.out.println("Lỗi!");
         return;
       }
       sp.setMa(ma);

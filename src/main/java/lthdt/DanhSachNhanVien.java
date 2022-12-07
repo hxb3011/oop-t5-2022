@@ -3,7 +3,6 @@ package lthdt;
 import java.io.*;
 import java.util.*;
 
-@SuppressWarnings("unused")
 public final class DanhSachNhanVien implements IListConsoleIO, IListFileIO {
   private int _soLuong;
   private NhanVien[] _array;

@@ -244,7 +244,7 @@ public abstract class QuanLyCuaHangMayTinh {
       System.out.println("|  1:             Theo mã                                                      |");
       System.out.println("|  2:             Theo họ                                                      |");
       System.out.println("|  3:             Theo tên                                                     |");
-      System.out.println("|  4:             Theo họ và tên                                                  |");
+      System.out.println("|  4:             Theo họ và tên                                               |");
       System.out.println("|  5:             Theo số điện thoại                                           |");
       System.out.println("|  6:             Theo mức lương                                               |");
       System.out.println("|  7:             Theo khoảng lương                                            |");
@@ -419,7 +419,7 @@ public abstract class QuanLyCuaHangMayTinh {
               System.out.println("Lỗi!");
               continue;
             }
-            NhanVien[] nv = _dsNhanVien.timTheoKhoangLuong(duoi, tren);
+            NhanVien[] nv = _dsNhanVien.timTheoKhoangNamVaoLam(duoi, tren);
             if (nv.length == 0) {
               System.out.println("Không tìm thấy nhân viên có khoảng năm vào làm: " + duoi + "-" + tren);
             } else xuatTimKiemDanhSachNhanVien(nv);
@@ -538,8 +538,477 @@ public abstract class QuanLyCuaHangMayTinh {
       } else break;
     }
   }
-  private static void menuDanhSachSanPham() {
+  private static void xuatTimKiemDanhSachSanPham(SanPham[] sp) {
+    if (sp.length != 0) {
+      if (sp.length == 1) {
+        sp[0].output();
+      } else {
+        System.out.printf("%-10s %-30s %-20s %-20s %-20s \n", "Mã", "Tên", "Nhà sản xuất", "Đơn giá", "Số lượng tồn");
+        for (SanPham spi : sp)
+          System.out.printf("%-10s %-30sps %-20s %-20s %-20s \n", spi.getMa(), spi.getTen(), spi.getTenNhaSanXuat(), spi.getDonGia(), spi.getSoLuong());
 
+        while (true) {
+          System.out.print("\nNhập mã sản phẩm để xem chi tiết (Bỏ qua để thoát): ");
+          String s = QuanLyCuaHangMayTinh.STANDARD_IN.nextLine();
+          if (s.isEmpty()) break;
+          if (!Validator.validateID(s)) {
+            System.out.println("Lỗi!");
+            continue;
+          }
+
+          for (SanPham spi : sp) {
+            if (spi.getMa().equals(s)) {
+              if (spi instanceof MayTinhBan) {
+                System.out.println("Máy tính để bàn: ");
+              } else if (spi instanceof Laptop) {
+                System.out.println("Laptop: ");
+              } else {
+                System.out.println("Lỗi!");
+                continue;
+              }
+              spi.output();
+            }
+          }
+        }
+      }
+    }
+  }
+  private static void menuTimKiemDanhSachSanPham() {
+    while (true) {
+      System.out.println();
+      System.out.println("+----------------------- DANH SÁCH SẢN PHẨM > TÌM KIẾM ------------------------+");
+      System.out.println("|  1:             Theo đơn giá                                                 |");
+      System.out.println("|  2:             Theo khoảng đơn giá                                          |");
+      System.out.println("|  3:             Theo số lượng tồn                                            |");
+      System.out.println("|  4:             Theo khoảng số lượng tồn                                     |");
+      System.out.println("|  5:             Theo phụ kiện tặng kèm                                       |");
+      System.out.println("|  6:             Theo chất lượng loa                                          |");
+      System.out.println("|  7:             Theo màn hình cảm ứng                                        |");
+      System.out.println("|  8:             Theo LED bàn phím                                            |");
+      System.out.println("|  *:             Trở về menu danh sách                                        |");
+      System.out.println("+------------------------------------------------------------------------------+");
+      System.out.print("> ");
+      String s = STANDARD_IN.nextLine();
+      if (s.length() == 1) {
+        char c = s.charAt(0);
+        if (c == '1') {
+          while (true) {
+            System.out.print("Nhập đơn giá của sản phẩm: ");
+            int dg;
+            try {
+              dg = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            SanPham[] sp = _dsSanPham.timTheoDonGia(dg);
+            if (sp.length == 0) {
+              System.out.println("Không tìm thấy sản phẩm có đơn giá: " + dg);
+            } else xuatTimKiemDanhSachSanPham(sp);
+            break;
+          }
+        } else if (c == '2') {
+          while (true) {
+            System.out.print("Nhập giới hạn dưới khoảng đơn giá của sản phẩm: ");
+            int duoi;
+            try {
+              duoi = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            if (duoi < 0) {
+              System.out.println("Lỗi!");
+              continue;
+            }
+            System.out.print("Nhập giới hạn trên khoảng đơn giá của sản phẩm: ");
+            int tren;
+            try {
+              tren = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            if (tren < 0) {
+              System.out.println("Lỗi!");
+              continue;
+            }
+            SanPham[] sp = _dsSanPham.timTheoKhoangDonGia(duoi, tren);
+            if (sp.length == 0) {
+              System.out.println("Không tìm thấy sản phẩm có khoảng đơn giá: " + duoi + "-" + tren);
+            } else xuatTimKiemDanhSachSanPham(sp);
+            break;
+          }
+        } else if (c == '3') {
+          while (true) {
+            System.out.print("Nhập số lượng tồn của sản phẩm: ");
+            int ton;
+            try {
+              ton = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            SanPham[] sp = _dsSanPham.timTheoSoLuongTon(ton);
+            if (sp.length == 0) {
+              System.out.println("Không tìm thấy sản phẩm có số lượng tồn: " + ton);
+            } else xuatTimKiemDanhSachSanPham(sp);
+            break;
+          }
+        } else if (c == '4') {
+          while (true) {
+            System.out.print("Nhập giới hạn dưới khoảng số lượng tồn của sản phẩm: ");
+            int duoi;
+            try {
+              duoi = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            if (duoi < 0) {
+              System.out.println("Lỗi!");
+              continue;
+            }
+            System.out.print("Nhập giới hạn trên khoảng số lượng tồn của sản phẩm: ");
+            int tren;
+            try {
+              tren = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            if (tren < 0) {
+              System.out.println("Lỗi!");
+              continue;
+            }
+            SanPham[] sp = _dsSanPham.timTheoKhoangSoLuongTon(duoi, tren);
+            if (sp.length == 0) {
+              System.out.println("Không tìm thấy sản phẩm có khoảng số lượng tồn: " + duoi + "-" + tren);
+            } else xuatTimKiemDanhSachSanPham(sp);
+            break;
+          }
+        } else if (c == '5') {
+          while (true) {
+            System.out.print("Nhập phụ kiện tặng kèm của máy tính bàn: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              MayTinhBan[] sp = _dsSanPham.timTheoPhuKien(s);
+              if (sp.length == 0) {
+                System.out.println("Không tìm thấy máy tính bàn có phụ kiện tặng kèm chứa: " + s);
+              } else xuatTimKiemDanhSachSanPham(sp);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '6') {
+          while (true) {
+            System.out.print("Nhập chất lượng loa của laptop: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              Laptop[] sp = _dsSanPham.timTheoChatLuongLoa(s);
+              if (sp.length == 0) {
+                System.out.println("Không tìm thấy laptop có chất lượng loa chứa: " + s);
+              } else xuatTimKiemDanhSachSanPham(sp);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '7') {
+          boolean cu;
+          while (true) {
+            System.out.print("Laptop có màn hình cảm ứng không? (0. Không, 1. Có): ");
+            s = STANDARD_IN.nextLine();
+            if (s.length() == 1) {
+              c = s.charAt(0);
+              if (c == '0') {
+                cu = false;
+                break;
+              } else if (c == '1') {
+                cu = true;
+                break;
+              }
+            }
+            System.out.println("Lỗi!");
+          }
+          SanPham[] sp = _dsSanPham.timTheoManHinhCamUng(cu);
+          if (sp.length == 0) {
+            System.out.println(cu ? "Không tìm thấy sản phẩm có màn hình cảm ứng." : "Không tìm thấy sản phẩm không có màn hình cảm ứng.");
+          } else xuatTimKiemDanhSachSanPham(sp);
+        } else if (c == '8') {
+          boolean led;
+          while (true) {
+            System.out.print("Laptop có LED bàn phím không? (0. Không, 1. Có): ");
+            s = STANDARD_IN.nextLine();
+            if (s.length() == 1) {
+              c = s.charAt(0);
+              if (c == '0') {
+                led = false;
+                break;
+              } else if (c == '1') {
+                led = true;
+                break;
+              }
+            }
+            System.out.println("Lỗi!");
+          }
+          SanPham[] sp = _dsSanPham.timTheoLedBanPhim(led);
+          if (sp.length == 0) {
+            System.out.println(led ? "Không tìm thấy sản phẩm có LED bàn phím." : "Không tìm thấy sản phẩm không có LED bàn phím.");
+          } else xuatTimKiemDanhSachSanPham(sp);
+        } else break;
+      } else break;
+    }
+  }
+  private static void menuTimKiemChiTietDanhSachSanPham() {
+    while (true) {
+      System.out.println();
+      System.out.println("+------------------- DANH SÁCH SẢN PHẨM > TÌM KIẾM CHI TIẾT -------------------+");
+      System.out.println("|  1:             Theo CPU                                                     |");
+      System.out.println("|  2:             Theo GPU                                                     |");
+      System.out.println("|  3:             Theo RAM                                                     |");
+      System.out.println("|  4:             Theo màn hình                                                |");
+      System.out.println("|  5:             Theo hệ điều hành                                            |");
+      System.out.println("|  6:             Theo năm sản xuất                                            |");
+      System.out.println("|  7:             Theo thời gian bảo hành                                      |");
+      System.out.println("|  8:             Theo khoảng thời gian bảo hành                               |");
+      System.out.println("|  *:             Trở về menu danh sách                                        |");
+      System.out.println("+------------------------------------------------------------------------------+");
+      System.out.print("> ");
+      String s = STANDARD_IN.nextLine();
+      if (s.length() == 1) {
+        char c = s.charAt(0);
+        if (c == '1') {
+          while (true) {
+            System.out.print("Nhập CPU sản phẩm: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              SanPham[] sp = _dsSanPham.timTheoCPU(s);
+              if (sp.length == 0) {
+                System.out.println("Không tìm thấy sản phẩm có CPU chứa: " + s);
+              } else xuatTimKiemDanhSachSanPham(sp);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '2') {
+          while (true) {
+            System.out.print("Nhập GPU sản phẩm: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              SanPham[] sp = _dsSanPham.timTheoGPU(s);
+              if (sp.length == 0) {
+                System.out.println("Không tìm thấy sản phẩm có GPU chứa: " + s);
+              } else xuatTimKiemDanhSachSanPham(sp);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '3') {
+          while (true) {
+            System.out.print("Nhập RAM sản phẩm: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              SanPham[] sp = _dsSanPham.timTheoRAM(s);
+              if (sp.length == 0) {
+                System.out.println("Không tìm thấy sản phẩm có RAM chứa: " + s);
+              } else xuatTimKiemDanhSachSanPham(sp);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '4') {
+          while (true) {
+            System.out.print("Nhập màn hình sản phẩm: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              SanPham[] sp = _dsSanPham.timTheoManHinh(s);
+              if (sp.length == 0) {
+                System.out.println("Không tìm thấy sản phẩm có màn hình chứa: " + s);
+              } else xuatTimKiemDanhSachSanPham(sp);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '5') {
+          while (true) {
+            System.out.print("Nhập hệ điều hành sản phẩm: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              SanPham[] sp = _dsSanPham.timTheoHeDieuHanh(s);
+              if (sp.length == 0) {
+                System.out.println("Không tìm thấy sản phẩm có hệ điều hành chứa: " + s);
+              } else xuatTimKiemDanhSachSanPham(sp);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '6') {
+          while (true) {
+            System.out.print("Nhập năm sản xuất sản phẩm: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              SanPham[] sp = _dsSanPham.timTheoNamSanXuat(s);
+              if (sp.length == 0) {
+                System.out.println("Không tìm thấy sản phẩm có năm sản xuất chứa: " + s);
+              } else xuatTimKiemDanhSachSanPham(sp);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '7') {
+          while (true) {
+            System.out.print("Nhập thời gian bảo hành của sản phẩm: ");
+            int bh;
+            try {
+              bh = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            SanPham[] sp = _dsSanPham.timTheoThoiGianBaoHanh(bh);
+            if (sp.length == 0) {
+              System.out.println("Không tìm thấy sản phẩm có thời gian bảo hành: " + bh);
+            } else xuatTimKiemDanhSachSanPham(sp);
+            break;
+          }
+        } else if (c == '8') {
+          while (true) {
+            System.out.print("Nhập giới hạn dưới khoảng thời gian bảo hành của sản phẩm: ");
+            int duoi;
+            try {
+              duoi = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            if (duoi < 0) {
+              System.out.println("Lỗi!");
+              continue;
+            }
+            System.out.print("Nhập giới hạn trên khoảng thời gian bảo hành của sản phẩm: ");
+            int tren;
+            try {
+              tren = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            if (tren < 0) {
+              System.out.println("Lỗi!");
+              continue;
+            }
+            SanPham[] sp = _dsSanPham.timTheoKhoangThoiGianBaoHanh(duoi, tren);
+            if (sp.length == 0) {
+              System.out.println("Không tìm thấy sản phẩm có khoảng thời gian bảo hành: " + duoi + "-" + tren);
+            } else xuatTimKiemDanhSachSanPham(sp);
+            break;
+          }
+        } else break;
+      } else break;
+    }
+  }
+  private static void menuDanhSachSanPham() {
+    while (true) {
+      System.out.println();
+      System.out.println("+----------------------------- DANH SÁCH SẢN PHẨM -----------------------------+");
+      System.out.println("|  1:             Sửa                                                          |");
+      System.out.println("|  2:             Tìm kiếm theo mã                                             |");
+      System.out.println("|  3:             Tìm kiếm máy tính bàn                                        |");
+      System.out.println("|  4:             Tìm kiếm laptop                                              |");
+      System.out.println("|  5:             Tìm kiếm theo tên                                            |");
+      System.out.println("|  6:             Tìm kiếm theo tên nhà sản xuất                               |");
+      System.out.println("|  7:             Tìm kiếm chi tiết                                            |");
+      System.out.println("|  8:             Tìm kiếm khác                                                |");
+      System.out.println("|  9:             Xem                                                          |");
+      System.out.println("|  *:             Trở về menu quản lý                                          |");
+      System.out.println("+------------------------------------------------------------------------------+");
+      System.out.print("> ");
+      String s = STANDARD_IN.nextLine();
+      if (s.length() == 1) {
+        char c = s.charAt(0);
+        if (c == '1') {
+          while (true) {
+            System.out.print("Nhập mã sản phẩm: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              SanPham sp = _dsSanPham.timTheoMa(s);
+              if (sp != null) {
+                sp.edit();
+                break;
+              }
+            }
+            System.out.println("Lỗi!");
+          }
+          saveDatabase();
+        } else if (c == '2') {
+          while (true) {
+            System.out.print("Nhập mã sản phẩm: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              SanPham sp = _dsSanPham.timTheoMa(s);
+              if (sp == null) {
+                System.out.println("Không tìm thấy sản phẩm có mã: " + s);
+              } else {
+                sp.output();
+              }
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '3') {
+          MayTinhBan[] sp = _dsSanPham.timMayTinhBan();
+          if (sp.length == 0) {
+            System.out.println("Không tìm thấy máy tính bàn.");
+          } else xuatTimKiemDanhSachSanPham(sp);
+        } else if (c == '4') {
+          Laptop[] sp = _dsSanPham.timLaptop();
+          if (sp.length == 0) {
+            System.out.println("Không tìm thấy laptop.");
+          } else xuatTimKiemDanhSachSanPham(sp);
+        } else if (c == '5') {
+          while (true) {
+            System.out.print("Nhập tên sản phẩm: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              SanPham[] sp = _dsSanPham.timTheoTen(s);
+              if (sp.length == 0) {
+                System.out.println("Không tìm thấy sản phẩm có tên chứa: " + s);
+              } else xuatTimKiemDanhSachSanPham(sp);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '6') {
+          while (true) {
+            System.out.print("Nhập tên nhà sản xuất sản phẩm: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              SanPham[] sp = _dsSanPham.timTheoTenNhaSanXuat(s);
+              if (sp.length == 0) {
+                System.out.println("Không tìm thấy nhà sản xuất sản phẩm có tên chứa: " + s);
+              } else xuatTimKiemDanhSachSanPham(sp);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '7') {
+          menuTimKiemChiTietDanhSachSanPham();
+        } else if (c == '8') {
+          menuTimKiemDanhSachSanPham();
+        } else if (c == '9') {
+          _dsSanPham.output();
+        } else break;
+      } else break;
+    }
   }
   private static void menuQuanLy() {
     while (true) {
