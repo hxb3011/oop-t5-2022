@@ -163,6 +163,8 @@ public class DanhSachHoaDon implements IListConsoleIO, IListFileIO {
   public boolean remove(int index) {
     int newLength = _soLuong;
     if (index < 0 || index >= newLength) return false;
+    if (!tryRemoveConstraint(_array[index]))
+      return false;
     _soLuong = --newLength;
 
     HoaDon[] arr = new HoaDon[newLength];
@@ -175,7 +177,10 @@ public class DanhSachHoaDon implements IListConsoleIO, IListFileIO {
   }
   public boolean remove(HoaDon hd) {
     int newLength = _soLuong;
-    if (timTheoMa(hd.getMa()) == null) return false;
+    hd = timTheoMa(hd.getMa());
+    if (hd == null) return false;
+    if (!tryRemoveConstraint(hd))
+      return false;
     _soLuong = --newLength;
 
     HoaDon[] arr = new HoaDon[newLength];
@@ -184,6 +189,18 @@ public class DanhSachHoaDon implements IListConsoleIO, IListFileIO {
     for (int j = i++ ; i < newLength ; j = i++)
       arr[j] = _array[i];
     _array = arr;
+    return true;
+  }
+  private boolean tryRemoveConstraint(HoaDon hd) {
+    ChiTietHoaDon[] ct = hd.getChiTiet();
+    for (ChiTietHoaDon cti : ct) {
+      SanPham sp = cti.getSanPham();
+      sp.setSoLuong(sp.getSoLuong() + cti.getSoLuong());
+    }
+    KhachHang kh = hd.getKhachHang();
+    if (timTheoMaKhachHang(kh.getMa()).length <= 1) {
+      QuanLyCuaHangMayTinh._dsKhachHang.remove(kh);
+    }
     return true;
   }
   public boolean daCo(String maHD) { return timTheoMa(maHD) != null; }

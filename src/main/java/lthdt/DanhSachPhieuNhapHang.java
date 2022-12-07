@@ -147,6 +147,7 @@ public class DanhSachPhieuNhapHang implements IListConsoleIO, IListFileIO {
   public boolean remove(int index) {
     int newLength = _soLuong;
     if (index < 0 || index >= newLength) return false;
+    if (tryRemoveConstraint(_array[index])) return false;
     _soLuong = --newLength;
 
     PhieuNhapHang[] arr = new PhieuNhapHang[newLength];
@@ -159,7 +160,9 @@ public class DanhSachPhieuNhapHang implements IListConsoleIO, IListFileIO {
   }
   public boolean remove(PhieuNhapHang pnh) {
     int newLength = _soLuong;
-    if (timTheoMa(pnh.getMa()) == null) return false;
+    pnh = timTheoMa(pnh.getMa());
+    if (pnh == null) return false;
+    if (tryRemoveConstraint(pnh)) return false;
     _soLuong = --newLength;
 
     PhieuNhapHang[] arr = new PhieuNhapHang[newLength];
@@ -168,6 +171,28 @@ public class DanhSachPhieuNhapHang implements IListConsoleIO, IListFileIO {
     for (int j = i++ ; i < newLength ; j = i++)
       arr[j] = _array[i];
     _array = arr;
+    return true;
+  }
+  private boolean tryRemoveConstraint(PhieuNhapHang pnh) {
+    ChiTietPhieuNhapHang[] ct = pnh.getChiTiet();
+    for (ChiTietPhieuNhapHang cti : ct) {
+      SanPham sp = cti.getSanPham();
+      if (sp.getSoLuong() < cti.getSoLuong()) return false;
+    }
+
+    for (ChiTietPhieuNhapHang cti : ct) {
+      SanPham sp = cti.getSanPham();
+      if (timTheoMaSanPham(sp.getMa()).length > 1) {
+        sp.setSoLuong(sp.getSoLuong() - cti.getSoLuong());
+      } else {
+        QuanLyCuaHangMayTinh._dsSanPham.remove(sp);
+      }
+    }
+
+    NhaCungCap ncc = pnh.getNhaCungCap();
+    if (timTheoMaNhaCungCap(ncc.getMa()).length <= 1) {
+      QuanLyCuaHangMayTinh._dsNhaCungCap.remove(ncc);
+    }
     return true;
   }
   public boolean daCo(String maHD) { return timTheoMa(maHD) != null; }

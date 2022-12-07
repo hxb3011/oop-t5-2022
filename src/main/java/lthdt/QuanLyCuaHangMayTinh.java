@@ -1,5 +1,6 @@
 package lthdt;
 
+import java.io.File;
 import java.util.Scanner;
 
 public abstract class QuanLyCuaHangMayTinh {
@@ -7,18 +8,289 @@ public abstract class QuanLyCuaHangMayTinh {
   public static final Scanner STANDARD_IN = new Scanner(System.in);
   public static final String EDIT_NOTE = "<* Bỏ qua những mục không thay đổi *>";
   public static boolean _debugMode = false;
-  public static String _databasePath = "";
+  public static String _databasePath = "database" + File.separator;
   public static final DanhSachSanPham _dsSanPham = new DanhSachSanPham();
   public static final DanhSachNhanVien _dsNhanVien = new DanhSachNhanVien();
   public static final DanhSachKhachHang _dsKhachHang = new DanhSachKhachHang();
   public static final DanhSachNhaCungCap _dsNhaCungCap = new DanhSachNhaCungCap();
   public static final DanhSachHoaDon _dsHoaDon = new DanhSachHoaDon();
   public static final DanhSachPhieuNhapHang _dsPhieuNhapHang = new DanhSachPhieuNhapHang();
+  private static void xuatTimKiemDanhSachPhieuNhapHang(PhieuNhapHang[] pnh) {
+    if (pnh.length != 0) {
+      if (pnh.length == 1) {
+        pnh[0].output();
+      } else {
+        System.out.printf("%-10s %-30s %-30s %-20s\n", "Mã", "Tên nhân viên", "Tên nhà cung cấp", "Tổng tiền");
+        for (PhieuNhapHang hdi : pnh)
+          System.out.printf("%-10s %-30s %-30s %-20s\n", hdi.getMa(), hdi.getNhanVien().getHoTen(), hdi.getNhaCungCap().getTen(), hdi.getTongTien());
 
-  private static void menuDanhSachPhieuNhapHang() {
-
+        outer: while (true) {
+          System.out.print("\nNhập mã phiếu nhập hàng để xem chi tiết (Bỏ qua để thoát): ");
+          String s = QuanLyCuaHangMayTinh.STANDARD_IN.nextLine();
+          if (s.isEmpty()) break;
+          if (!Validator.validateID(s)) {
+            System.out.println("Lỗi!");
+            continue;
+          }
+          for (PhieuNhapHang hdi : pnh) {
+            if (hdi.getMa().equals(s)) {
+              hdi.output();
+              continue outer;
+            }
+          }
+          System.out.println("Lỗi!");
+        }
+      }
+    }
   }
-
+  private static void menuTimKiemDanhSachPhieuNhapHang() {
+    while (true) {
+      System.out.println();
+      System.out.println("+-------------------- DANH SÁCH PHIẾU NHẬP HÀNG > TÌM KIẾM --------------------+");
+      System.out.println("|  1:             Theo mã phiếu nhập hàng                                      |");
+      System.out.println("|  2:             Theo ngày lập                                                |");
+      System.out.println("|  3:             Theo mã nhà cung cấp                                         |");
+      System.out.println("|  4:             Theo mã nhân viên                                            |");
+      System.out.println("|  5:             Theo mã sản phẩm                                             |");
+      System.out.println("|  6:             Theo tổng tiền                                               |");
+      System.out.println("|  7:             Theo khoảng tổng tiền                                        |");
+      System.out.println("|  *:             Trở về menu danh sách                                        |");
+      System.out.println("+------------------------------------------------------------------------------+");
+      System.out.print("> ");
+      String s = STANDARD_IN.nextLine();
+      if (s.length() == 1) {
+        char c = s.charAt(0);
+        if (c == '1') {
+          while (true) {
+            System.out.print("Nhập mã phiếu nhập hàng: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              PhieuNhapHang hd = _dsPhieuNhapHang.timTheoMa(s);
+              if (hd == null) {
+                System.out.println("Không tìm thấy phiếu nhập hàng có mã: " + s);
+              } else {
+                hd.output();
+              }
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '2') {
+          while (true) {
+            System.out.print("Nhập ngày lập phiếu nhập hàng: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateDate(s)) {
+              PhieuNhapHang[] hd = _dsPhieuNhapHang.timTheoNgayLap(s);
+              if (hd.length == 0) {
+                System.out.println("Không tìm thấy phiếu nhập hàng có ngày lập: " + s);
+              } else xuatTimKiemDanhSachPhieuNhapHang(hd);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '3') {
+          while (true) {
+            System.out.print("Nhập mã nhà cung cấp: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              PhieuNhapHang[] hd = _dsPhieuNhapHang.timTheoMaNhaCungCap(s);
+              if (hd.length == 0) {
+                System.out.println("Không tìm thấy phiếu nhập hàng có mã nhà cung cấp: " + s);
+              } else xuatTimKiemDanhSachPhieuNhapHang(hd);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '4') {
+          while (true) {
+            System.out.print("Nhập mã nhân viên: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              PhieuNhapHang[] hd = _dsPhieuNhapHang.timTheoMaNhanVien(s);
+              if (hd.length == 0) {
+                System.out.println("Không tìm thấy phiếu nhập hàng có mã nhân viên: " + s);
+              } else xuatTimKiemDanhSachPhieuNhapHang(hd);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '5') {
+          while (true) {
+            System.out.print("Nhập mã sản phẩm: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              PhieuNhapHang[] hd = _dsPhieuNhapHang.timTheoMaSanPham(s);
+              if (hd.length == 0) {
+                System.out.println("Không tìm thấy phiếu nhập hàng có mã sản phẩm: " + s);
+              } else xuatTimKiemDanhSachPhieuNhapHang(hd);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '6') {
+          while (true) {
+            System.out.print("Nhập tổng tiền của phiếu nhập hàng: ");
+            int tt;
+            try {
+              tt = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            PhieuNhapHang[] hd = _dsPhieuNhapHang.timTheoTongTien(tt);
+            if (hd.length == 0) {
+              System.out.println("Không tìm thấy phiếu nhập hàng có tổng tiền: " + tt);
+            } else xuatTimKiemDanhSachPhieuNhapHang(hd);
+            break;
+          }
+        } else if (c == '7') {
+          while (true) {
+            System.out.print("Nhập giới hạn dưới khoảng tổng tiền của phiếu nhập hàng: ");
+            int duoi;
+            try {
+              duoi = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            if (duoi < 0) {
+              System.out.println("Lỗi!");
+              continue;
+            }
+            System.out.print("Nhập giới hạn trên khoảng tổng tiền của phiếu nhập hàng: ");
+            int tren;
+            try {
+              tren = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            if (tren < 0) {
+              System.out.println("Lỗi!");
+              continue;
+            }
+            PhieuNhapHang[] hd = _dsPhieuNhapHang.timTheoKhoangTongTien(duoi, tren);
+            if (hd.length == 0) {
+              System.out.println("Không tìm thấy phiếu nhập hàng có khoảng tổng tiền: " + duoi + "-" + tren);
+            } else xuatTimKiemDanhSachPhieuNhapHang(hd);
+            break;
+          }
+        } else break;
+      } else break;
+    }
+  }
+  private static void menuThongKeDanhSachPhieuNhapHang() {
+    while (true) {
+      System.out.println();
+      System.out.println("+-------------------- DANH SÁCH PHIẾU NHẬP HÀNG > THỐNG KÊ --------------------+");
+      System.out.println("|  1:             Tổng tiền bán theo khách hàng                                |");
+      System.out.println("|  2:             Tổng tiền bán theo nhân viên                                 |");
+      System.out.println("|  3:             Tổng tiền bán theo sản phẩm                                  |");
+      System.out.println("|  *:             Trở về menu danh sách                                        |");
+      System.out.println("+------------------------------------------------------------------------------+");
+      System.out.print("> ");
+      String s = STANDARD_IN.nextLine();
+      if (s.length() == 1) {
+        char c = s.charAt(0);
+        if (c == '1') _dsPhieuNhapHang.thongKeTongTienNhapTheoNhaCungCap();
+        else if (c == '2') _dsPhieuNhapHang.thongKeTongTienNhapTheoNhanVien();
+        else if (c == '3') _dsPhieuNhapHang.thongKeTongTienNhapTheoSanPham();
+        else break;
+      } else break;
+    }
+  }
+  private static void menuDanhSachPhieuNhapHang() {
+    while (true) {
+      System.out.println();
+      System.out.println("+------------------------- DANH SÁCH PHIẾU NHẬP HÀNG --------------------------+");
+      System.out.println("|  1:             Thêm                                                         |");
+      System.out.println("|  2:             Sửa                                                          |");
+      System.out.println("|  3:             Xoá                                                          |");
+      System.out.println("|  4:             Tìm kiếm                                                     |");
+      System.out.println("|  5:             Thống kê                                                     |");
+      if (_dsHoaDon.soLuong() > 0)
+        System.out.println("|  6:             Xem                                                          |");
+      else
+        System.out.println("|  6:             Nhập nhiều                                                   |");
+      System.out.println("|  *:             Trở về menu quản lý                                          |");
+      System.out.println("+------------------------------------------------------------------------------+");
+      System.out.print("> ");
+      String s = STANDARD_IN.nextLine();
+      if (s.length() == 1) {
+        char c = s.charAt(0);
+        if (c == '1') {
+          while (true) {
+            System.out.print("Nhập mã phiếu nhập hàng: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              if (!_dsHoaDon.daCo(s)) {
+                PhieuNhapHang pnh = new PhieuNhapHang();
+                pnh.setMa(s);
+                pnh.input();
+                _dsPhieuNhapHang.add(pnh);
+                break;
+              }
+            }
+            System.out.println("Lỗi!");
+          }
+          saveDatabase();
+        } else if (c == '2') {
+          while (true) {
+            System.out.print("Nhập mã phiếu nhập hàng: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              PhieuNhapHang pnh = _dsPhieuNhapHang.timTheoMa(s);
+              if (pnh != null) {
+                pnh.edit();
+                break;
+              }
+            }
+            System.out.println("Lỗi!");
+          }
+          saveDatabase();
+        } else if (c == '3') {
+          while (true) {
+            System.out.print("Nhập mã phiếu nhập hàng: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              if (_dsPhieuNhapHang.xoaTheoMa(s)) break;
+            }
+            System.out.println("Lỗi!");
+          }
+          saveDatabase();
+        } else if (c == '4') {
+          menuTimKiemDanhSachPhieuNhapHang();
+        } else if (c == '5') {
+          menuThongKeDanhSachPhieuNhapHang();
+        } else if (c == '6') {
+          if (_dsPhieuNhapHang.soLuong() > 0) {
+            _dsPhieuNhapHang.output();
+          } else {
+            int n;
+            while (true) {
+              try {
+                n = Integer.parseInt(STANDARD_IN.nextLine());
+              } catch (Throwable e) {
+                processingInternalThrowable(e);
+                System.out.println("Lỗi!");
+                continue;
+              }
+              if (n < 0) {
+                System.out.println("Lỗi!");
+                continue;
+              }
+              _dsPhieuNhapHang.input(n);
+              break;
+            }
+            saveDatabase();
+          }
+        } else break;
+      } else break;
+    }
+  }
   private static void xuatTimKiemDanhSachHoaDon(HoaDon[] hd) {
     if (hd.length != 0) {
       if (hd.length == 1) {
@@ -256,23 +528,11 @@ public abstract class QuanLyCuaHangMayTinh {
           }
           saveDatabase();
         } else if (c == '3') {
-          outer:
           while (true) {
             System.out.print("Nhập mã hóa đơn: ");
             s = STANDARD_IN.nextLine();
             if (Validator.validateID(s)) {
-              HoaDon hd = _dsHoaDon.timTheoMa(s);
-              if (hd != null) {
-                _dsHoaDon.remove(hd);
-
-                for (int i = 0 ; i < _dsKhachHang.soLuong() ; i++) {
-                  if (_dsKhachHang.get(i) == hd.getKhachHang()) {
-                    break outer;
-                  }
-                }
-                _dsKhachHang.remove(hd.getKhachHang());
-                break;
-              }
+              if (_dsHoaDon.xoaTheoMa(s)) break;
             }
             System.out.println("Lỗi!");
           }
