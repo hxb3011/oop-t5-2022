@@ -24,7 +24,8 @@ public abstract class QuanLyCuaHangMayTinh {
         for (PhieuNhapHang hdi : pnh)
           System.out.printf("%-10s %-30s %-30s %-20s\n", hdi.getMa(), hdi.getNhanVien().getHoTen(), hdi.getNhaCungCap().getTen(), hdi.getTongTien());
 
-        outer: while (true) {
+        outer:
+        while (true) {
           System.out.print("\nNhập mã phiếu nhập hàng để xem chi tiết (Bỏ qua để thoát): ");
           String s = QuanLyCuaHangMayTinh.STANDARD_IN.nextLine();
           if (s.isEmpty()) break;
@@ -300,7 +301,8 @@ public abstract class QuanLyCuaHangMayTinh {
         for (HoaDon hdi : hd)
           System.out.printf("%-10s %-30s %-30s %-20s\n", hdi.getMa(), hdi.getNhanVien().getHoTen(), hdi.getKhachHang().getHoTen(), hdi.getTongTien());
 
-        outer: while (true) {
+        outer:
+        while (true) {
           System.out.print("\nNhập mã hoá đơn để xem chi tiết (Bỏ qua để thoát): ");
           String s = QuanLyCuaHangMayTinh.STANDARD_IN.nextLine();
           if (s.isEmpty()) break;
@@ -1093,7 +1095,8 @@ public abstract class QuanLyCuaHangMayTinh {
         for (SanPham spi : sp)
           System.out.printf("%-10s %-30sps %-20s %-20s %-20s \n", spi.getMa(), spi.getTen(), spi.getTenNhaSanXuat(), spi.getDonGia(), spi.getSoLuong());
 
-        outer: while (true) {
+        outer:
+        while (true) {
           System.out.print("\nNhập mã sản phẩm để xem chi tiết (Bỏ qua để thoát): ");
           String s = QuanLyCuaHangMayTinh.STANDARD_IN.nextLine();
           if (s.isEmpty()) break;
@@ -1586,14 +1589,18 @@ public abstract class QuanLyCuaHangMayTinh {
     }
   }
   private static void loadDatabase() {
-    _dsSanPham.readFile();
-    _dsNhanVien.readFile();
-    _dsKhachHang.readFile();
-    _dsNhaCungCap.readFile();
-    _dsHoaDon.readFile();
-    _dsPhieuNhapHang.readFile();
+    if (new File(_databasePath).exists()) {
+      _dsSanPham.readFile();
+      _dsNhanVien.readFile();
+      _dsKhachHang.readFile();
+      _dsNhaCungCap.readFile();
+      _dsHoaDon.readFile();
+      _dsPhieuNhapHang.readFile();
+    }
   }
   private static void saveDatabase() {
+    File dir = new File(_databasePath);
+    if (!dir.exists()) dir.mkdirs();
     _dsSanPham.writeFile();
     _dsNhanVien.writeFile();
     _dsKhachHang.writeFile();
