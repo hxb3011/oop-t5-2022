@@ -14,7 +14,7 @@ public class DanhSachHoaDon implements IListConsoleIO, IListFileIO {
   public DanhSachHoaDon() { this(new HoaDon[0], 0); }
   public int soLuong() { return _soLuong; }
   public HoaDon get(int index) { return (index < 0 || index >= _soLuong) ? null : _array[index]; }
-  public void set(int index, HoaDon sp) { if (index >= 0 && index < _soLuong) _array[index] = sp; }
+  public void set(int index, HoaDon hd) { if (index >= 0 && index < _soLuong) _array[index] = hd; }
   public HoaDon timTheoMa(String ma) {
     for (int i = 0, n = _soLuong ; i < n ; ++i)
       if (_array[i].getMa().equals(ma)) return _array[i];
@@ -23,129 +23,129 @@ public class DanhSachHoaDon implements IListConsoleIO, IListFileIO {
   public HoaDon[] timTheoNgayLap(String ngayLap) {
     ngayLap = ngayLap.toLowerCase();
     int n = _soLuong, k = 0;
-    HoaDon[] sp = new HoaDon[n];
+    HoaDon[] hd = new HoaDon[n];
     for (int i = 0 ; i < n ; ++i)
-      if (_array[i].getChuoiNgayLap().toLowerCase().equals(ngayLap)) sp[k++] = _array[i];
-    return Arrays.copyOf(sp, k);
+      if (_array[i].getChuoiNgayLap().toLowerCase().equals(ngayLap)) hd[k++] = _array[i];
+    return Arrays.copyOf(hd, k);
   }
   public HoaDon[] timTheoNgayLap(int ngay, int thang, int nam) {
     int ntn = DateUtil.getDate(ngay, thang, nam);
     int n = _soLuong, k = 0;
-    HoaDon[] sp = new HoaDon[n];
+    HoaDon[] hd = new HoaDon[n];
     for (int i = 0 ; i < n ; ++i)
-      if (_array[i].getNgayLap() == ntn) sp[k++] = _array[i];
-    return Arrays.copyOf(sp, k);
+      if (_array[i].getNgayLap() == ntn) hd[k++] = _array[i];
+    return Arrays.copyOf(hd, k);
   }
   public HoaDon[] timTheoMaNhanVien(String ma) {
     ma = ma.toLowerCase();
     int n = _soLuong, k = 0;
-    HoaDon[] sp = new HoaDon[n];
+    HoaDon[] hd = new HoaDon[n];
     for (int i = 0 ; i < n ; ++i)
-      if (_array[i].getNhanVien().getMa().toLowerCase().equals(ma)) sp[k++] = _array[i];
-    return Arrays.copyOf(sp, k);
+      if (_array[i].getNhanVien().getMa().toLowerCase().equals(ma)) hd[k++] = _array[i];
+    return Arrays.copyOf(hd, k);
   }
   public HoaDon[] timTheoHoNhanVien(String ho) {
     ho = ho.toLowerCase();
     int n = _soLuong, k = 0;
-    HoaDon[] sp = new HoaDon[n];
+    HoaDon[] hd = new HoaDon[n];
     for (int i = 0 ; i < n ; ++i)
-      if (_array[i].getNhanVien().getHo().toLowerCase().indexOf(ho) >= 0) sp[k++] = _array[i];
-    return Arrays.copyOf(sp, k);
+      if (_array[i].getNhanVien().getHo().toLowerCase().indexOf(ho) >= 0) hd[k++] = _array[i];
+    return Arrays.copyOf(hd, k);
   }
   public HoaDon[] timTheoTenNhanVien(String ten) {
     ten = ten.toLowerCase();
     int n = _soLuong, k = 0;
-    HoaDon[] sp = new HoaDon[n];
+    HoaDon[] hd = new HoaDon[n];
     for (int i = 0 ; i < n ; ++i)
-      if (_array[i].getNhanVien().getTen().toLowerCase().indexOf(ten) >= 0) sp[k++] = _array[i];
-    return Arrays.copyOf(sp, k);
+      if (_array[i].getNhanVien().getTen().toLowerCase().indexOf(ten) >= 0) hd[k++] = _array[i];
+    return Arrays.copyOf(hd, k);
   }
   public HoaDon[] timTheoHoTenNhanVien(String hoTen) {
     hoTen = hoTen.toLowerCase();
     int n = _soLuong, k = 0;
-    HoaDon[] sp = new HoaDon[n];
+    HoaDon[] hd = new HoaDon[n];
     for (int i = 0 ; i < n ; ++i)
-      if (_array[i].getNhanVien().getHoTen().toLowerCase().indexOf(hoTen) >= 0) sp[k++] = _array[i];
-    return Arrays.copyOf(sp, k);
+      if (_array[i].getNhanVien().getHoTen().toLowerCase().indexOf(hoTen) >= 0) hd[k++] = _array[i];
+    return Arrays.copyOf(hd, k);
   }
   public HoaDon[] timTheoMaKhachHang(String ma) {
     ma = ma.toLowerCase();
     int n = _soLuong, k = 0;
-    HoaDon[] sp = new HoaDon[n];
+    HoaDon[] hd = new HoaDon[n];
     for (int i = 0 ; i < n ; ++i)
-      if (_array[i].getNhanVien().getMa().toLowerCase().equals(ma)) sp[k++] = _array[i];
-    return Arrays.copyOf(sp, k);
+      if (_array[i].getNhanVien().getMa().toLowerCase().equals(ma)) hd[k++] = _array[i];
+    return Arrays.copyOf(hd, k);
   }
   public HoaDon[] timTheoHoKhachHang(String ho) {
     ho = ho.toLowerCase();
     int n = _soLuong, k = 0;
-    HoaDon[] sp = new HoaDon[n];
+    HoaDon[] hd = new HoaDon[n];
     for (int i = 0 ; i < n ; ++i)
-      if (_array[i].getNhanVien().getHo().toLowerCase().indexOf(ho) >= 0) sp[k++] = _array[i];
-    return Arrays.copyOf(sp, k);
+      if (_array[i].getNhanVien().getHo().toLowerCase().indexOf(ho) >= 0) hd[k++] = _array[i];
+    return Arrays.copyOf(hd, k);
   }
   public HoaDon[] timTheoTenKhachHang(String ten) {
     ten = ten.toLowerCase();
     int n = _soLuong, k = 0;
-    HoaDon[] sp = new HoaDon[n];
+    HoaDon[] hd = new HoaDon[n];
     for (int i = 0 ; i < n ; ++i)
-      if (_array[i].getNhanVien().getTen().toLowerCase().indexOf(ten) >= 0) sp[k++] = _array[i];
-    return Arrays.copyOf(sp, k);
+      if (_array[i].getNhanVien().getTen().toLowerCase().indexOf(ten) >= 0) hd[k++] = _array[i];
+    return Arrays.copyOf(hd, k);
   }
   public HoaDon[] timTheoHoTenKhachHang(String hoTen) {
     hoTen = hoTen.toLowerCase();
     int n = _soLuong, k = 0;
-    HoaDon[] sp = new HoaDon[n];
+    HoaDon[] hd = new HoaDon[n];
     for (int i = 0 ; i < n ; ++i)
-      if (_array[i].getNhanVien().getHoTen().toLowerCase().indexOf(hoTen) >= 0) sp[k++] = _array[i];
-    return Arrays.copyOf(sp, k);
+      if (_array[i].getNhanVien().getHoTen().toLowerCase().indexOf(hoTen) >= 0) hd[k++] = _array[i];
+    return Arrays.copyOf(hd, k);
   }
   public HoaDon[] timTheoMaSanPham(String ma) {
     int n = _soLuong, k = 0;
-    HoaDon[] sp = new HoaDon[n];
+    HoaDon[] hd = new HoaDon[n];
     for (int i = 0 ; i < n ; ++i) {
-      ChiTietHoaDon[] ct = sp[i].getChiTiet();
+      ChiTietHoaDon[] ct = hd[i].getChiTiet();
       for (ChiTietHoaDon chiTietHoaDon : ct) {
         if (chiTietHoaDon.getSanPham().getMa().equals(ma)) {
-          sp[k++] = _array[i];
+          hd[k++] = _array[i];
           break;
         }
       }
     }
-    return Arrays.copyOf(sp, k);
+    return Arrays.copyOf(hd, k);
   }
   public HoaDon[] timTheoTenSanPham(String ten) {
     int n = _soLuong, k = 0;
-    HoaDon[] sp = new HoaDon[n];
+    HoaDon[] hd = new HoaDon[n];
     for (int i = 0 ; i < n ; ++i) {
-      ChiTietHoaDon[] ct = sp[i].getChiTiet();
+      ChiTietHoaDon[] ct = hd[i].getChiTiet();
       for (ChiTietHoaDon chiTietHoaDon : ct) {
         if (chiTietHoaDon.getSanPham().getTen().indexOf(ten) >= 0) {
-          sp[k++] = _array[i];
+          hd[k++] = _array[i];
           break;
         }
       }
     }
-    return Arrays.copyOf(sp, k);
+    return Arrays.copyOf(hd, k);
   }
   public HoaDon[] timTheoTongTien(long tongTien) {
     int n = _soLuong, k = 0;
-    HoaDon[] sp = new HoaDon[n];
+    HoaDon[] hd = new HoaDon[n];
     for (int i = 0 ; i < n ; ++i)
-      if (_array[i].getTongTien() == tongTien) sp[k++] = _array[i];
-    return Arrays.copyOf(sp, k);
+      if (_array[i].getTongTien() == tongTien) hd[k++] = _array[i];
+    return Arrays.copyOf(hd, k);
   }
   public HoaDon[] timTheoKhoangTongTien(long tongTienNho, long tongTienLon) {
     int n = _soLuong, k = 0;
-    HoaDon[] sp = new HoaDon[n];
+    HoaDon[] hd = new HoaDon[n];
     for (int i = 0 ; i < n ; ++i) {
       long tongTien = _array[i].getTongTien();
-      if (tongTien >= tongTienNho && tongTien <= tongTienLon) sp[k++] = _array[i];
+      if (tongTien >= tongTienNho && tongTien <= tongTienLon) hd[k++] = _array[i];
     }
-    return Arrays.copyOf(sp, k);
+    return Arrays.copyOf(hd, k);
   }
-  public boolean add(int index, HoaDon sp) {
-    if (timTheoMa(sp.getMa()) != null) return false;
+  public boolean add(int index, HoaDon hd) {
+    if (timTheoMa(hd.getMa()) != null) return false;
 
     int newLength = _soLuong + 1;
     _soLuong = newLength;
@@ -153,13 +153,13 @@ public class DanhSachHoaDon implements IListConsoleIO, IListFileIO {
     HoaDon[] arr = new HoaDon[newLength];
     int i = 0;
     for ( ; i < index ; i++) arr[i] = _array[i];
-    arr[i] = sp;
+    arr[i] = hd;
     for (int j = i++ ; i < newLength ; j = i++)
       arr[i] = _array[j];
     _array = arr;
     return true;
   }
-  public boolean add(HoaDon sp) { return add(_soLuong, sp); }
+  public boolean add(HoaDon hd) { return add(_soLuong, hd); }
   public boolean remove(int index) {
     int newLength = _soLuong;
     if (index < 0 || index >= newLength) return false;
@@ -173,14 +173,14 @@ public class DanhSachHoaDon implements IListConsoleIO, IListFileIO {
     _array = arr;
     return true;
   }
-  public boolean remove(HoaDon sp) {
+  public boolean remove(HoaDon hd) {
     int newLength = _soLuong;
-    if (timTheoMa(sp.getMa()) == null) return false;
+    if (timTheoMa(hd.getMa()) == null) return false;
     _soLuong = --newLength;
 
     HoaDon[] arr = new HoaDon[newLength];
     int i = 0;
-    for ( ; sp.getMa().equals(arr[i].getMa()) ; i++) arr[i] = _array[i];
+    for ( ; hd.getMa().equals(arr[i].getMa()) ; i++) arr[i] = _array[i];
     for (int j = i++ ; i < newLength ; j = i++)
       arr[j] = _array[i];
     _array = arr;
@@ -189,9 +189,9 @@ public class DanhSachHoaDon implements IListConsoleIO, IListFileIO {
   public boolean daCo(String maHD) { return timTheoMa(maHD) != null; }
   public boolean daCo(HoaDon hd) { return daCo(hd.getMa()); }
   public boolean xoaTheoMa(String ma) {
-    HoaDon kh = timTheoMa(ma);
-    if (kh == null) return false;
-    return remove(kh);
+    HoaDon hd = timTheoMa(ma);
+    if (hd == null) return false;
+    return remove(hd);
   }
   public void thongKeTongTienBanTheoKhachHang() {
     DanhSachKhachHang dskh = QuanLyCuaHangMayTinh._dsKhachHang;
@@ -364,10 +364,10 @@ public class DanhSachHoaDon implements IListConsoleIO, IListFileIO {
         if (!daCo(ma)) break;
         System.out.println("Lỗi!");
       }
-      HoaDon sp = new HoaDon();
-      sp.setMa(ma);
-      sp.input();
-      temp[i] = sp;
+      HoaDon hd = new HoaDon();
+      hd.setMa(ma);
+      hd.input();
+      temp[i] = hd;
     }
     System.arraycopy(_array, 0, temp, 0, _soLuong);
     _soLuong = newLength;

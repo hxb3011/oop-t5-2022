@@ -18,8 +18,294 @@ public abstract class QuanLyCuaHangMayTinh {
   private static void menuDanhSachPhieuNhapHang() {
 
   }
-  private static void menuDanhSachHoaDon() {
 
+  private static void xuatTimKiemDanhSachHoaDon(HoaDon[] hd) {
+    if (hd.length != 0) {
+      if (hd.length == 1) {
+        hd[0].output();
+      } else {
+        System.out.printf("%-10s %-30s %-30s %-20s\n", "Mã", "Tên nhân viên", "Tên khách hàng", "Tổng tiền");
+        for (HoaDon hdi : hd)
+          System.out.printf("%-10s %-30s %-30s %-20s\n", hdi.getMa(), hdi.getNhanVien().getHoTen(), hdi.getKhachHang().getHoTen(), hdi.getTongTien());
+
+        outer: while (true) {
+          System.out.print("\nNhập mã hoá đơn để xem chi tiết (Bỏ qua để thoát): ");
+          String s = QuanLyCuaHangMayTinh.STANDARD_IN.nextLine();
+          if (s.isEmpty()) break;
+          if (!Validator.validateID(s)) {
+            System.out.println("Lỗi!");
+            continue;
+          }
+          for (HoaDon hdi : hd) {
+            if (hdi.getMa().equals(s)) {
+              hdi.output();
+              continue outer;
+            }
+          }
+          System.out.println("Lỗi!");
+        }
+      }
+    }
+  }
+  private static void menuTimKiemDanhSachHoaDon() {
+    while (true) {
+      System.out.println();
+      System.out.println("+------------------------ DANH SÁCH HOÁ ĐƠN > TÌM KIẾM ------------------------+");
+      System.out.println("|  1:             Theo mã hoá đơn                                              |");
+      System.out.println("|  2:             Theo ngày lập                                                |");
+      System.out.println("|  3:             Theo mã khách hàng                                           |");
+      System.out.println("|  4:             Theo mã nhân viên                                            |");
+      System.out.println("|  5:             Theo mã sản phẩm                                             |");
+      System.out.println("|  6:             Theo tổng tiền                                               |");
+      System.out.println("|  7:             Theo khoảng tổng tiền                                        |");
+      System.out.println("|  *:             Trở về menu danh sách                                        |");
+      System.out.println("+------------------------------------------------------------------------------+");
+      System.out.print("> ");
+      String s = STANDARD_IN.nextLine();
+      if (s.length() == 1) {
+        char c = s.charAt(0);
+        if (c == '1') {
+          while (true) {
+            System.out.print("Nhập mã hoá đơn: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              HoaDon hd = _dsHoaDon.timTheoMa(s);
+              if (hd == null) {
+                System.out.println("Không tìm thấy hoá đơn có mã: " + s);
+              } else {
+                hd.output();
+              }
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '2') {
+          while (true) {
+            System.out.print("Nhập ngày lập hoá đơn: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateDate(s)) {
+              HoaDon[] hd = _dsHoaDon.timTheoNgayLap(s);
+              if (hd.length == 0) {
+                System.out.println("Không tìm thấy hoá đơn có ngày lập: " + s);
+              } else xuatTimKiemDanhSachHoaDon(hd);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '3') {
+          while (true) {
+            System.out.print("Nhập mã khách hàng: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              HoaDon[] hd = _dsHoaDon.timTheoMaKhachHang(s);
+              if (hd.length == 0) {
+                System.out.println("Không tìm thấy hoá đơn có mã khách hàng: " + s);
+              } else xuatTimKiemDanhSachHoaDon(hd);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '4') {
+          while (true) {
+            System.out.print("Nhập mã nhân viên: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              HoaDon[] hd = _dsHoaDon.timTheoMaNhanVien(s);
+              if (hd.length == 0) {
+                System.out.println("Không tìm thấy hoá đơn có mã nhân viên: " + s);
+              } else xuatTimKiemDanhSachHoaDon(hd);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '5') {
+          while (true) {
+            System.out.print("Nhập mã sản phẩm: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateName(s)) {
+              HoaDon[] hd = _dsHoaDon.timTheoMaSanPham(s);
+              if (hd.length == 0) {
+                System.out.println("Không tìm thấy hoá đơn có mã sản phẩm: " + s);
+              } else xuatTimKiemDanhSachHoaDon(hd);
+              break;
+            }
+            System.out.println("Lỗi!");
+          }
+        } else if (c == '6') {
+          while (true) {
+            System.out.print("Nhập tổng tiền của hoá đơn: ");
+            int tt;
+            try {
+              tt = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            HoaDon[] hd = _dsHoaDon.timTheoTongTien(tt);
+            if (hd.length == 0) {
+              System.out.println("Không tìm thấy hoá đơn có tổng tiền: " + tt);
+            } else xuatTimKiemDanhSachHoaDon(hd);
+            break;
+          }
+        } else if (c == '7') {
+          while (true) {
+            System.out.print("Nhập giới hạn dưới khoảng tổng tiền của hoá đơn: ");
+            int duoi;
+            try {
+              duoi = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            if (duoi < 0) {
+              System.out.println("Lỗi!");
+              continue;
+            }
+            System.out.print("Nhập giới hạn trên khoảng tổng tiền của hoá đơn: ");
+            int tren;
+            try {
+              tren = Integer.parseInt(STANDARD_IN.nextLine());
+            } catch (Throwable e) {
+              processingInternalThrowable(e);
+              System.out.println("Lỗi!");
+              continue;
+            }
+            if (tren < 0) {
+              System.out.println("Lỗi!");
+              continue;
+            }
+            HoaDon[] hd = _dsHoaDon.timTheoKhoangTongTien(duoi, tren);
+            if (hd.length == 0) {
+              System.out.println("Không tìm thấy hoá đơn có khoảng tổng tiền: " + duoi + "-" + tren);
+            } else xuatTimKiemDanhSachHoaDon(hd);
+            break;
+          }
+        } else break;
+      } else break;
+    }
+  }
+  private static void menuThongKeDanhSachHoaDon() {
+    while (true) {
+      System.out.println();
+      System.out.println("+------------------------ DANH SÁCH HOÁ ĐƠN > THỐNG KÊ ------------------------+");
+      System.out.println("|  1:             Tổng tiền bán theo khách hàng                                |");
+      System.out.println("|  2:             Tổng tiền bán theo nhân viên                                 |");
+      System.out.println("|  3:             Tổng tiền bán theo sản phẩm                                  |");
+      System.out.println("|  *:             Trở về menu danh sách                                        |");
+      System.out.println("+------------------------------------------------------------------------------+");
+      System.out.print("> ");
+      String s = STANDARD_IN.nextLine();
+      if (s.length() == 1) {
+        char c = s.charAt(0);
+        if (c == '1') _dsHoaDon.thongKeTongTienBanTheoKhachHang();
+        else if (c == '2') _dsHoaDon.thongKeTongTienBanTheoNhanVien();
+        else if (c == '3') _dsHoaDon.thongKeTongTienBanTheoSanPham();
+        else break;
+      } else break;
+    }
+  }
+  private static void menuDanhSachHoaDon() {
+    while (true) {
+      System.out.println();
+      System.out.println("+----------------------------- DANH SÁCH HOÁ ĐƠN ------------------------------+");
+      System.out.println("|  1:             Thêm                                                         |");
+      System.out.println("|  2:             Sửa                                                          |");
+      System.out.println("|  3:             Xoá                                                          |");
+      System.out.println("|  4:             Tìm kiếm                                                     |");
+      System.out.println("|  5:             Thống kê                                                     |");
+      if (_dsHoaDon.soLuong() > 0)
+        System.out.println("|  6:             Xem                                                          |");
+      else
+        System.out.println("|  6:             Nhập nhiều                                                   |");
+      System.out.println("|  *:             Trở về menu quản lý                                          |");
+      System.out.println("+------------------------------------------------------------------------------+");
+      System.out.print("> ");
+      String s = STANDARD_IN.nextLine();
+      if (s.length() == 1) {
+        char c = s.charAt(0);
+        if (c == '1') {
+          while (true) {
+            System.out.print("Nhập mã hoá đơn: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              if (!_dsHoaDon.daCo(s)) {
+                HoaDon hd = new HoaDon();
+                hd.setMa(s);
+                hd.input();
+                _dsHoaDon.add(hd);
+                break;
+              }
+            }
+            System.out.println("Lỗi!");
+          }
+          saveDatabase();
+        } else if (c == '2') {
+          while (true) {
+            System.out.print("Nhập mã hoá đơn: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              HoaDon hd = _dsHoaDon.timTheoMa(s);
+              if (hd != null) {
+                hd.edit();
+                break;
+              }
+            }
+            System.out.println("Lỗi!");
+          }
+          saveDatabase();
+        } else if (c == '3') {
+          outer:
+          while (true) {
+            System.out.print("Nhập mã hóa đơn: ");
+            s = STANDARD_IN.nextLine();
+            if (Validator.validateID(s)) {
+              HoaDon hd = _dsHoaDon.timTheoMa(s);
+              if (hd != null) {
+                _dsHoaDon.remove(hd);
+
+                for (int i = 0 ; i < _dsKhachHang.soLuong() ; i++) {
+                  if (_dsKhachHang.get(i) == hd.getKhachHang()) {
+                    break outer;
+                  }
+                }
+                _dsKhachHang.remove(hd.getKhachHang());
+                break;
+              }
+            }
+            System.out.println("Lỗi!");
+          }
+          saveDatabase();
+        } else if (c == '4') {
+          menuTimKiemDanhSachHoaDon();
+        } else if (c == '5') {
+          menuThongKeDanhSachHoaDon();
+        } else if (c == '6') {
+          if (_dsHoaDon.soLuong() > 0) {
+            _dsHoaDon.output();
+          } else {
+            int n;
+            while (true) {
+              try {
+                n = Integer.parseInt(STANDARD_IN.nextLine());
+              } catch (Throwable e) {
+                processingInternalThrowable(e);
+                System.out.println("Lỗi!");
+                continue;
+              }
+              if (n < 0) {
+                System.out.println("Lỗi!");
+                continue;
+              }
+              _dsHoaDon.input(n);
+              break;
+            }
+            saveDatabase();
+          }
+        } else break;
+      } else break;
+    }
   }
   private static void xuatTimKiemDanhSachNhaCungCap(NhaCungCap[] ncc) {
     if (ncc.length != 0) {
@@ -547,7 +833,7 @@ public abstract class QuanLyCuaHangMayTinh {
         for (SanPham spi : sp)
           System.out.printf("%-10s %-30sps %-20s %-20s %-20s \n", spi.getMa(), spi.getTen(), spi.getTenNhaSanXuat(), spi.getDonGia(), spi.getSoLuong());
 
-        while (true) {
+        outer: while (true) {
           System.out.print("\nNhập mã sản phẩm để xem chi tiết (Bỏ qua để thoát): ");
           String s = QuanLyCuaHangMayTinh.STANDARD_IN.nextLine();
           if (s.isEmpty()) break;
@@ -567,8 +853,10 @@ public abstract class QuanLyCuaHangMayTinh {
                 continue;
               }
               spi.output();
+              continue outer;
             }
           }
+          System.out.println("Lỗi!");
         }
       }
     }
