@@ -92,7 +92,7 @@ public final class ChiTietSanPham implements IConsoleIO, IConsoleEditable, IStre
     while (true) {
       System.out.print("Nhập thời gian bảo hành: ");
       try {
-        _thoiGianBaoHanh = Integer.parseInt(s);
+        _thoiGianBaoHanh = Integer.parseInt(in.nextLine());
         break;
       } catch (Throwable e) {
         QuanLyCuaHangMayTinh.processingInternalThrowable(e);

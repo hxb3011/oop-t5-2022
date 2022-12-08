@@ -104,7 +104,7 @@ public class DanhSachHoaDon implements IListConsoleIO, IListFileIO {
     int n = _soLuong, k = 0;
     HoaDon[] hd = new HoaDon[n];
     for (int i = 0 ; i < n ; ++i) {
-      ChiTietHoaDon[] ct = hd[i].getChiTiet();
+      ChiTietHoaDon[] ct = _array[i].getChiTiet();
       for (ChiTietHoaDon chiTietHoaDon : ct) {
         if (chiTietHoaDon.getSanPham().getMa().equals(ma)) {
           hd[k++] = _array[i];
@@ -312,7 +312,7 @@ public class DanhSachHoaDon implements IListConsoleIO, IListFileIO {
       String sMa = null;
       while (base.hasNextLine()) {
         HoaDon hd = new HoaDon();
-        hd.input();
+        hd.input(base);
         String ma = hd.getMa();
         add(hd);
         while (spec.hasNextLine()) {

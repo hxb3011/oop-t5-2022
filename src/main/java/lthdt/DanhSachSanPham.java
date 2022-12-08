@@ -295,10 +295,18 @@ public final class DanhSachSanPham implements IListConsoleIO, IListFileIO {
       base = new OutputStreamWriter(new FileOutputStream(QuanLyCuaHangMayTinh._databasePath + "SanPham.txt"));
       specC = new OutputStreamWriter(new FileOutputStream(QuanLyCuaHangMayTinh._databasePath + "MayTinhBan.txt"));
       specL = new OutputStreamWriter(new FileOutputStream(QuanLyCuaHangMayTinh._databasePath + "Laptop.txt"));
+      String nl = System.lineSeparator();
       for (int i = 0 ; i < _soLuong ; i++) {
         SanPham sp = _array[i];
-        if (sp instanceof MayTinhBan) sp.output(base, specC);
-        else if (sp instanceof Laptop) sp.output(base, specL);
+        if (sp instanceof MayTinhBan) {
+          specC.write(sp.getMa());
+          specC.write(nl);
+          sp.output(base, specC);
+        } else if (sp instanceof Laptop) {
+          specL.write(sp.getMa());
+          specL.write(nl);
+          sp.output(base, specL);
+        }
       }
       base.close();
       specC.close();

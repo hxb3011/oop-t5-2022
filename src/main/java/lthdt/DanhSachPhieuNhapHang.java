@@ -86,17 +86,17 @@ public class DanhSachPhieuNhapHang implements IListConsoleIO, IListFileIO {
   }
   public PhieuNhapHang[] timTheoMaSanPham(String ma) {
     int n = _soLuong, k = 0;
-    PhieuNhapHang[] sp = new PhieuNhapHang[n];
+    PhieuNhapHang[] pnh = new PhieuNhapHang[n];
     for (int i = 0 ; i < n ; ++i) {
-      ChiTietPhieuNhapHang[] ct = sp[i].getChiTiet();
+      ChiTietPhieuNhapHang[] ct = _array[i].getChiTiet();
       for (ChiTietPhieuNhapHang cti : ct) {
         if (cti.getSanPham().getMa().equals(ma)) {
-          sp[k++] = _array[i];
+          pnh[k++] = _array[i];
           break;
         }
       }
     }
-    return Arrays.copyOf(sp, k);
+    return Arrays.copyOf(pnh, k);
   }
   public PhieuNhapHang[] timTheoTenSanPham(String ten) {
     int n = _soLuong, k = 0;
@@ -304,7 +304,7 @@ public class DanhSachPhieuNhapHang implements IListConsoleIO, IListFileIO {
       String sMa = null;
       while (base.hasNextLine()) {
         PhieuNhapHang pnh = new PhieuNhapHang();
-        pnh.input();
+        pnh.input(base);
         String ma = pnh.getMa();
         add(pnh);
         while (spec.hasNextLine()) {

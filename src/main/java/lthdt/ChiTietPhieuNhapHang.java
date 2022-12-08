@@ -44,14 +44,14 @@ public class ChiTietPhieuNhapHang implements IConsoleIO, IConsoleEditable, IStre
         }
         _sp = dssp.timTheoMa(s);
         if (_sp == null) {
-          System.out.println("Thêm sản phẩm mới? (*. Không / 1. Phải): ");
+          System.out.print("Thêm sản phẩm mới? (*. Không / 1. Phải): ");
           String ans = in.nextLine();
           if (ans.length() != 1 || ans.charAt(0) != '1') {
             System.out.println("Lỗi!");
             continue;
           }
           while (true) {
-            System.out.println("Nhập loại sản phẩm cần thêm (1. Laptop, 2. Máy Tính Để Bàn): ");
+            System.out.print("Nhập loại sản phẩm cần thêm (1. Laptop, 2. Máy Tính Để Bàn): ");
             String type = in.nextLine();
             if (type.length() == 1) {
               char c = type.charAt(0);
@@ -73,7 +73,7 @@ public class ChiTietPhieuNhapHang implements IConsoleIO, IConsoleEditable, IStre
       }
     }
     while (true) {
-      System.out.println("Nhập đơn giá nhập hàng của sản phẩm: ");
+      System.out.print("Nhập đơn giá nhập hàng của sản phẩm: ");
       try {
         _donGia = Integer.parseInt(in.nextLine());
         break;
@@ -83,7 +83,7 @@ public class ChiTietPhieuNhapHang implements IConsoleIO, IConsoleEditable, IStre
       }
     }
     while (true) {
-      System.out.println("Nhập số lượng sản phẩm: ");
+      System.out.print("Nhập số lượng sản phẩm: ");
       try {
         _soLuong = Integer.parseInt(in.nextLine());
         break;
@@ -129,14 +129,14 @@ public class ChiTietPhieuNhapHang implements IConsoleIO, IConsoleEditable, IStre
       }
       SanPham sp = dssp.timTheoMa(s);
       if (sp == null) {
-        System.out.println("Thêm sản phẩm mới? (*. Không / 1. Phải): ");
+        System.out.print("Thêm sản phẩm mới? (*. Không / 1. Phải): ");
         String ans = in.nextLine();
         if (ans.length() != 1 || ans.charAt(0) != '1') {
           System.out.println("Lỗi!");
           continue;
         }
         while (true) {
-          System.out.println("Nhập loại sản phẩm cần thêm (1. Laptop, 2. Máy Tính Để Bàn): ");
+          System.out.print("Nhập loại sản phẩm cần thêm (1. Laptop, 2. Máy Tính Để Bàn): ");
           String type = in.nextLine();
           if (type.length() == 1) {
             char c = type.charAt(0);
@@ -161,7 +161,7 @@ public class ChiTietPhieuNhapHang implements IConsoleIO, IConsoleEditable, IStre
     }
     String s;
     while (true) {
-      System.out.println("Nhập đơn giá nhập hàng của sản phẩm: ");
+      System.out.print("Nhập đơn giá nhập hàng của sản phẩm: ");
       if ((s = in.nextLine()).isEmpty()) break;
       int dg;
       try {
@@ -175,7 +175,7 @@ public class ChiTietPhieuNhapHang implements IConsoleIO, IConsoleEditable, IStre
       break;
     }
     while (true) {
-      System.out.println("Nhập số lượng sản phẩm: ");
+      System.out.print("Nhập số lượng sản phẩm: ");
       if ((s = in.nextLine()).isEmpty()) break;
       int soLuongTon = _sp.getSoLuong() - _soLuong, soLuong;
       try {

@@ -105,7 +105,7 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
       }
       _kh = dskh.timTheoMa(ma);
       if (_kh != null) break;
-      System.out.println("Thêm khách hàng mới? (*. Không / 1. Phải): ");
+      System.out.print("Thêm khách hàng mới? (*. Không / 1. Phải): ");
       String ans = in.nextLine();
       if (ans.length() == 1 && ans.charAt(0) == '1') {
         _kh = new KhachHang();
@@ -145,17 +145,16 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
   }
   public void output() {
     System.out.println("+----------------------------------- HÓA ĐƠN ----------------------------------+");
-    System.out.printf("|  Mã hóa đơn: %s                                                              |\n", _ma);
-    System.out.printf("|  Ngày lập: %s                                                                |\n", getChuoiNgayLap());
-    System.out.printf("|  Nhân viên: %s %s                                                            |\n", _nv.getHo(), _nv.getTen());
-    System.out.printf("|  Khách hàng: %s %s                                                           |\n", _kh.getHo(), _kh.getTen());
+    System.out.printf("|  Mã hóa đơn: %s\n", _ma);
+    System.out.printf("|  Ngày lập: %s\n", getChuoiNgayLap());
+    System.out.printf("|  Nhân viên: %s %s\n", _nv.getHo(), _nv.getTen());
+    System.out.printf("|  Khách hàng: %s %s\n", _kh.getHo(), _kh.getTen());
     System.out.printf("|  %-10s %-30s %-10s %-20s   |\n", "STT", "Tên sản phẩm", "Số lượng mua", "Thành tiền");
     for (int i = 0, n = _chiTiet.length ; i < n ; i++) {
       System.out.printf("|  %-10s ", i + 1);
       _chiTiet[i].output();
-      System.out.println("   |");
     }
-    System.out.printf("|  %73s   |\n", "Tổng tiền của hóa đơn: " + _tongTien + "VND");
+    System.out.printf("|  %73s\n", "Tổng tiền của hóa đơn: " + _tongTien + "VND");
     System.out.println("+------------------------------------------------------------------------------+");
   }
   public void edit() {

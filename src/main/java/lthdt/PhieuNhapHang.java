@@ -90,7 +90,10 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
         continue;
       }
       NhanVien nv = dsnv.timTheoMa(ma);
-      if (nv != null) break;
+      if (nv != null) {
+        _nv = nv;
+        break;
+      }
       System.out.println("Lỗi!");
     }
     DanhSachNhaCungCap dskh = QuanLyCuaHangMayTinh._dsNhaCungCap;
@@ -105,7 +108,7 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
         continue;
       }
       if (_ncc != null) break;
-      System.out.println("Thêm nhà cung cấp mới? (*. Không / 1. Phải): ");
+      System.out.print("Thêm nhà cung cấp mới? (*. Không / 1. Phải): ");
       String ans = in.nextLine();
       if (ans.length() == 1 && ans.charAt(0) == '1') {
         _ncc = new NhaCungCap();
@@ -117,10 +120,12 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
       System.out.println("Lỗi!");
     }
     DanhSachSanPham dssp = QuanLyCuaHangMayTinh._dsSanPham;
+    dssp.output();
     ChiTietPhieuNhapHang ct = new ChiTietPhieuNhapHang();
     ct.input();
+    add(ct);
     while (true) {
-      System.out.println("Thêm chi tiết phiếu nhập hàng? (*. Không / 1. Phải): ");
+      System.out.print("Thêm chi tiết phiếu nhập hàng? (*. Không / 1. Phải): ");
       String ans = in.nextLine();
       if (ans.length() != 1 || ans.charAt(0) != '1') break;
       SanPham sp;
@@ -131,17 +136,20 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
           System.out.println("Lỗi!");
           continue;
         }
+        if (contain(s)) {
+          System.out.println("Lỗi!");
+          continue;
+        }
         sp = dssp.timTheoMa(s);
-        if (!contain(s)) break;
         if (sp == null) {
-          System.out.println("Thêm sản phẩm mới? (*. Không / 1. Phải): ");
+          System.out.print("Thêm sản phẩm mới? (*. Không / 1. Phải): ");
           ans = in.nextLine();
           if (ans.length() != 1 || ans.charAt(0) != '1') {
             System.out.println("Lỗi!");
             continue;
           }
           while (true) {
-            System.out.println("Nhập loại sản phẩm cần thêm (1. Laptop, 2. Máy Tính Để Bàn): ");
+            System.out.print("Nhập loại sản phẩm cần thêm (1. Laptop, 2. Máy Tính Để Bàn): ");
             String type = in.nextLine();
             if (type.length() == 1) {
               char c = type.charAt(0);
@@ -172,17 +180,16 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
   }
   public void output() {
     System.out.println("+------------------------------- PHIẾU NHẬP HÀNG ------------------------------+");
-    System.out.printf("|  Mã phiếu nhập hàng: %s                                                      |\n", _ma);
-    System.out.printf("|  Ngày lập: %s                                                                |\n", getChuoiNgayLap());
-    System.out.printf("|  Nhân viên: %s %s                                                            |\n", _nv.getHo(), _nv.getTen());
-    System.out.printf("|  Nhà cung cấp: %s                                                            |\n", _ncc.getTen());
-    System.out.printf("|  %-10s %-30s %-10s %-20s   |\n", "STT", "Tên sản phẩm", "Số lượng", "Thành tiền");
+    System.out.printf("|  Mã phiếu nhập hàng: %s\n", _ma);
+    System.out.printf("|  Ngày lập: %s\n", getChuoiNgayLap());
+    System.out.printf("|  Nhân viên: %s %s\n", _nv.getHo(), _nv.getTen());
+    System.out.printf("|  Nhà cung cấp: %s\n", _ncc.getTen());
+    System.out.printf("|  %-10s %-30s %-10s %-20s\n", "STT", "Tên sản phẩm", "Số lượng", "Thành tiền");
     for (int i = 0, n = _chiTiet.length ; i < n ; i++) {
       System.out.printf("|  %-10s ", i + 1);
       _chiTiet[i].output();
-      System.out.println("   |");
     }
-    System.out.printf("|  %73s   |\n", "Tổng tiền của phiếu nhập hàng: " + _tongTien + "VND");
+    System.out.printf("|  %73s\n", "Tổng tiền của phiếu nhập hàng: " + _tongTien + "VND");
     System.out.println("+------------------------------------------------------------------------------+");
   }
   public void edit() {
@@ -242,7 +249,7 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
         _ncc = ncc;
         break;
       }
-      System.out.println("Thêm nhà cung cấp mới? (*. Không / 1. Phải): ");
+      System.out.print("Thêm nhà cung cấp mới? (*. Không / 1. Phải): ");
       s = in.nextLine();
       if (s.length() == 1 && s.charAt(0) == '1') {
         _ncc = new NhaCungCap();
@@ -254,7 +261,7 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
     }
     DanhSachSanPham dssp = QuanLyCuaHangMayTinh._dsSanPham;
     while (true) {
-      System.out.println("Thao tác chi tiết phiếu nhập hàng (*. Hoàn tất / 1. Thêm / 2. Sửa / 3. Xoá / 4. Xem): ");
+      System.out.print("Thao tác chi tiết phiếu nhập hàng (*. Hoàn tất / 1. Thêm / 2. Sửa / 3. Xoá / 4. Xem): ");
       s = in.nextLine();
       if (s.length() == 1) {
         char c = s.charAt(0);
@@ -266,10 +273,13 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
               System.out.println("Lỗi!");
               continue;
             }
+            if (contain(s)) {
+              System.out.println("Lỗi!");
+              continue;
+            }
             sp = dssp.timTheoMa(s);
-            if (!contain(s)) break;
             if (sp == null) {
-              System.out.println("Thêm sản phẩm mới? (*. Không / 1. Phải): ");
+              System.out.print("Thêm sản phẩm mới? (*. Không / 1. Phải): ");
               String ans = in.nextLine();
               if (ans.length() != 1 || ans.charAt(0) != '1') {
                 System.out.println("Lỗi!");

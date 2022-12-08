@@ -212,7 +212,7 @@ public abstract class QuanLyCuaHangMayTinh {
       System.out.println("|  3:             Xoá                                                          |");
       System.out.println("|  4:             Tìm kiếm                                                     |");
       System.out.println("|  5:             Thống kê                                                     |");
-      if (_dsHoaDon.soLuong() > 0)
+      if (_dsPhieuNhapHang.soLuong() > 0)
         System.out.println("|  6:             Xem                                                          |");
       else
         System.out.println("|  6:             Nhập nhiều                                                   |");
@@ -1615,45 +1615,45 @@ public abstract class QuanLyCuaHangMayTinh {
       System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     }
   }
-
-  private static void preload() {
-    DanhSachSanPham dssp = new DanhSachSanPham();
-    DanhSachNhanVien dsnv = new DanhSachNhanVien();
-    DanhSachKhachHang dskh = new DanhSachKhachHang();
-    DanhSachNhaCungCap dsncc = new DanhSachNhaCungCap();
-    DanhSachHoaDon dshd = new DanhSachHoaDon();
-    DanhSachPhieuNhapHang dspnh = new DanhSachPhieuNhapHang();
-
-    SanPham sp = null;
-    dssp.add(sp);
-    sp = null;
-    dssp.add(sp);
-    sp = null;
-    dssp.add(sp);
-    sp = null;
-    dssp.add(sp);
-    sp = null;
-    dssp.add(sp);
-    sp = null;
-    dssp.add(sp);
-    sp = null;
-    dssp.add(sp);
-    sp = null;
-    dssp.add(sp);
-    sp = null;
-    dssp.add(sp);
-    sp = null;
-    dssp.add(sp);
-
-    // TODO: other...
-
-    dssp.writeFile();
-    dsnv.writeFile();
-    dskh.writeFile();
-    dsncc.writeFile();
-    dshd.writeFile();
-    dspnh.writeFile();
-  }
+  //
+  // private static void preload() {
+  //   DanhSachSanPham dssp = new DanhSachSanPham();
+  //   DanhSachNhanVien dsnv = new DanhSachNhanVien();
+  //   DanhSachKhachHang dskh = new DanhSachKhachHang();
+  //   DanhSachNhaCungCap dsncc = new DanhSachNhaCungCap();
+  //   DanhSachHoaDon dshd = new DanhSachHoaDon();
+  //   DanhSachPhieuNhapHang dspnh = new DanhSachPhieuNhapHang();
+  //
+  //   SanPham sp = null;
+  //   dssp.add(sp);
+  //   sp = null;
+  //   dssp.add(sp);
+  //   sp = null;
+  //   dssp.add(sp);
+  //   sp = null;
+  //   dssp.add(sp);
+  //   sp = null;
+  //   dssp.add(sp);
+  //   sp = null;
+  //   dssp.add(sp);
+  //   sp = null;
+  //   dssp.add(sp);
+  //   sp = null;
+  //   dssp.add(sp);
+  //   sp = null;
+  //   dssp.add(sp);
+  //   sp = null;
+  //   dssp.add(sp);
+  //
+  //   // TODO: other...
+  //
+  //   dssp.writeFile();
+  //   dsnv.writeFile();
+  //   dskh.writeFile();
+  //   dsncc.writeFile();
+  //   dshd.writeFile();
+  //   dspnh.writeFile();
+  // }
 
   private static void configure(String[] args) {
     int CF_DEBUG = 1;
@@ -1674,7 +1674,7 @@ public abstract class QuanLyCuaHangMayTinh {
           _debugMode = true;
         }
         continue;
-      } else if (arg.startsWith("-p") || arg.startsWith("--preload-mode")) {
+      } else /*if (arg.startsWith("-p") || arg.startsWith("--preload-mode")) {
         if ((configured & CF_PRELOAD) == CF_PRELOAD) {
           if (_debugMode) {
             System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -1686,7 +1686,7 @@ public abstract class QuanLyCuaHangMayTinh {
           preload();
         }
         continue;
-      } else if (arg.startsWith("-d")) {
+      } else*/ if (arg.startsWith("-b")) {
         arg = arg.substring(2);
       } else if (arg.startsWith("--database-path=")) {
         arg = arg.substring(16);

@@ -92,8 +92,6 @@ public final class MayTinhBan extends SanPham {
     super.input(base);
     _chiTiet.input(base);
 
-    String s = spec.nextLine();
-    if (getMa().isEmpty()) setMa(s);
     inputSpec(spec);
   }
   public void output(OutputStreamWriter base, OutputStreamWriter spec) {
@@ -101,9 +99,6 @@ public final class MayTinhBan extends SanPham {
     _chiTiet.output(base);
 
     try {
-      spec.write(getMa());
-      spec.write(System.lineSeparator());
-
       outputSpec(spec);
     } catch (Throwable e) {
       QuanLyCuaHangMayTinh.processingInternalThrowable(e);
