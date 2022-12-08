@@ -1,0 +1,144 @@
+LT001
+MacBook Air M2
+Apple
+55000000
+0
+Apple M2
+None
+8GB
+IPS
+MacOS 13.0
+2022
+1
+LT002
+Vivo book f12
+Asus
+25000000
+2
+Intel i9
+None
+8GB
+IPS
+Windows 10
+2017
+1
+LT004
+ThinkPad G1
+ThinkPad
+18000000
+8
+Intel i5
+GTX-1650
+8GB
+IPS
+Windows 7
+2019
+1
+LT003
+Lenovo extreme git2
+Lenovo
+12000000
+8
+Intel i3
+GTX 850
+8GB
+IPS
+Windows 11
+2022
+1
+LT005
+Intel Evo 3
+Intel
+30000000
+18
+Intel Evo 3
+None
+8GB
+Amoled
+Windows 11
+2022
+1
+MB001
+Mac mini Air M2
+Apple
+55000000
+8
+Apple M2
+None
+8GB
+IPS
+MacOS 13.0
+2022
+1
+MB002
+Vivo computer f12
+Asus
+25000000
+8
+Intel i9
+None
+8GB
+IPS
+Windows 10
+2017
+1
+MB004
+ThinkPad Computer G1
+ThinkPad
+18000000
+8
+Intel i5
+GTX-1650
+8GB
+IPS
+Windows 7
+2019
+1
+MB003
+Lenovo computer git2
+Lenovo
+12000000
+8
+Intel i3
+GTX 850
+8GB
+IPS
+Windows 11
+2022
+1
+MB005
+Intel computer Evo 3
+Intel
+30000000
+8
+Intel Evo 3
+None
+8GB
+Amoled
+Windows 11
+2022
+1
+LT006
+Laptop AnhThong v1
+AnhThong
+20000000
+23
+Intel i9
+GTX 3080
+32 GB
+Amoled
+Windows 10
+2022
+1
+MB006
+AnhThong Computer v1
+AnhThong
+17000000
+30
+Intel i9
+GTX 3080
+8 GB
+IPS
+Windows 10
+2022
+1

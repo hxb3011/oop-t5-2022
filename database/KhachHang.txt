@@ -1,0 +1,50 @@
+KH001
+Trinh Thang
+Binh
+0987654321
+Ho Chi Minh
+KH002
+Khoi
+My
+0987654322
+Tra Vinh
+KH003
+Nguyen Xuan
+Phuc
+0987654323
+Ha Noi
+KH004
+Ho Cam
+Huong
+0987654324
+Tay Ninh
+KH005
+Cam
+Ly
+0987654325
+Ho Chi Minh
+KH006
+Trinh Thang
+Dan
+0987654331
+Ho Chi Minh
+KH007
+Khoi
+Men
+0987654332
+Tra Vinh
+KH008
+Nguyen Xuan
+Phuc
+0987654333
+Ha Noi
+KH009
+Ho Cam
+Ly
+0987654334
+Tay Ninh
+KH010
+Cam
+My
+0987654335
+Ho Chi Minh

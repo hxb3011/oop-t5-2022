@@ -1,0 +1,12 @@
+CC001
+Apple
+CC002
+Asus
+CC003
+Lenovo
+CC004
+ThinkPad
+CC005
+Intel
+CC006
+AnhThong
