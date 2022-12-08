@@ -280,6 +280,11 @@ public class DanhSachHoaDon implements IListConsoleIO, IListFileIO {
       ChiTietHoaDon[] ct = _array[i].getChiTiet();
       for (ChiTietHoaDon cti : ct) {
         for (int j = 0 ; j < dssp.soLuong() ; j++) {
+          // sử dụng == thay cho getMa().equals(): vì
+          // + mỗi đối tượng sản phẩm trong chi tiết hoá đơn
+          // được lấy tham chiếu trực tiếp (không copy) từ cùng danh sách
+          // + mà mỗi mã tương ứng với 1 sản phẩm,
+          // sản phẩm sau mà trùng mã sẽ không được thêm vào
           if (dssp.get(j) == cti.getSanPham()) {
             tongTienBan[j] += cti.getThanhTien();
             soLuongBan[j] += cti.getSoLuong();

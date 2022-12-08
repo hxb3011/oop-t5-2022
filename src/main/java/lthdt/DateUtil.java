@@ -1,5 +1,8 @@
 package lthdt;
 
+// lớp hỗ trợ cho cấu trúc dữ liệu dạng trường bit (bit field)
+// cấu trúc đũ liệu được cài đặt thông qua kiểu dữ liệu int
+// phạm vi: 01/01/1800 đến 31/12/8390407
 public abstract class DateUtil {
   private DateUtil() { }
   public static final int DATE_ERROR_DATE = -1;
