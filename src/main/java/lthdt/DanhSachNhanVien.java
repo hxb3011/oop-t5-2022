@@ -170,9 +170,9 @@ public final class DanhSachNhanVien implements IListConsoleIO, IListFileIO {
     try {
       stream = new Scanner(new FileInputStream(QuanLyCuaHangMayTinh._databasePath + "NhanVien.txt"));
       while (stream.hasNextLine()) {
-        NhanVien ncc = new NhanVien();
-        ncc.input(stream);
-        add(ncc);
+        NhanVien nv = new NhanVien();
+        nv.input(stream);
+        add(nv);
       }
       stream.close();
     } catch (Throwable e) {

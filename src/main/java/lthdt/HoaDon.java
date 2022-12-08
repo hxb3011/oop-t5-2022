@@ -89,8 +89,11 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
         System.out.println("Lỗi!");
         continue;
       }
-      _nv = dsnv.timTheoMa(ma);
-      if (_nv != null) break;
+      NhanVien nv = dsnv.timTheoMa(ma);
+      if (nv != null) {
+        _nv = nv;
+        break;
+      }
       System.out.println("Lỗi!");
     }
     DanhSachKhachHang dskh = QuanLyCuaHangMayTinh._dsKhachHang;
@@ -117,8 +120,10 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
       System.out.println("Lỗi!");
     }
     DanhSachSanPham dssp = QuanLyCuaHangMayTinh._dsSanPham;
+    dssp.output();
     ChiTietHoaDon ct = new ChiTietHoaDon();
     ct.input();
+    add(ct);
     while (true) {
       System.out.println("Thêm chi tiết hoá đơn? (*. Không / 1. Phải): ");
       String ans = in.nextLine();
@@ -130,8 +135,12 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
           System.out.println("Lỗi!");
           continue;
         }
+        if (contain(s)) {
+          System.out.println("Lỗi!");
+          continue;
+        }
         sp = dssp.timTheoMa(s);
-        if (!contain(s) && sp != null && sp.getSoLuong() > 0) break;
+        if (sp != null && sp.getSoLuong() > 0) break;
         System.out.println("Lỗi!");
       }
       ct = new ChiTietHoaDon();
@@ -149,7 +158,7 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
     System.out.printf("|  Ngày lập: %s\n", getChuoiNgayLap());
     System.out.printf("|  Nhân viên: %s %s\n", _nv.getHo(), _nv.getTen());
     System.out.printf("|  Khách hàng: %s %s\n", _kh.getHo(), _kh.getTen());
-    System.out.printf("|  %-10s %-30s %-10s %-20s   |\n", "STT", "Tên sản phẩm", "Số lượng mua", "Thành tiền");
+    System.out.printf("|  %-10s %-30s %-10s %-20s\n", "STT", "Tên sản phẩm", "Số lượng mua", "Thành tiền");
     for (int i = 0, n = _chiTiet.length ; i < n ; i++) {
       System.out.printf("|  %-10s ", i + 1);
       _chiTiet[i].output();
@@ -238,8 +247,12 @@ public class HoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
               System.out.println("Lỗi!");
               continue;
             }
+            if (contain(s)) {
+              System.out.println("Lỗi!");
+              continue;
+            }
             sp = dssp.timTheoMa(s);
-            if (!contain(s) && sp != null && sp.getSoLuong() > 0) break;
+            if (sp != null && sp.getSoLuong() > 0) break;
             System.out.println("Lỗi!");
           }
           ChiTietHoaDon ct = new ChiTietHoaDon();

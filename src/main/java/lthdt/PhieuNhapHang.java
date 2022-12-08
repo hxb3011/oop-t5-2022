@@ -96,13 +96,13 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
       }
       System.out.println("Lỗi!");
     }
-    DanhSachNhaCungCap dskh = QuanLyCuaHangMayTinh._dsNhaCungCap;
+    DanhSachNhaCungCap dsncc = QuanLyCuaHangMayTinh._dsNhaCungCap;
     System.out.println("Danh sách nhà cung cấp: ");
-    dskh.output();
+    dsncc.output();
     while (true) {
       System.out.print("Nhập mã nhà cung cấp: ");
       String ma = in.nextLine();
-      _ncc = dskh.timTheoMa(ma);
+      _ncc = dsncc.timTheoMa(ma);
       if (!Validator.validateID(ma)) {
         System.out.println("Lỗi!");
         continue;
@@ -114,7 +114,7 @@ public class PhieuNhapHang implements IConsoleIO, IConsoleEditable, IStreamIO {
         _ncc = new NhaCungCap();
         _ncc.setMa(ma);
         _ncc.input();
-        dskh.add(_ncc);
+        dsncc.add(_ncc);
         break;
       }
       System.out.println("Lỗi!");

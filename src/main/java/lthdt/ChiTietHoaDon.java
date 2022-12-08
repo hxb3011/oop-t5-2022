@@ -43,7 +43,7 @@ public class ChiTietHoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
       }
     }
     while (true) {
-      System.out.println("Nhập số lượng sản phẩm: ");
+      System.out.print("Nhập số lượng sản phẩm: ");
       try {
         _soLuong = Integer.parseInt(in.nextLine());
       } catch (Throwable e) {
@@ -59,7 +59,7 @@ public class ChiTietHoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
     }
     _thanhTien = _sp.getDonGia() * _soLuong;
   }
-  public void output() { System.out.printf("%-30s %-10s %-20s", _sp.getTen(), _soLuong, _thanhTien + "VND"); }
+  public void output() { System.out.printf("%-30s %-10s %-20s\n", _sp.getTen(), _soLuong, _thanhTien + "VND"); }
   public void input(Scanner in) {
     _sp = QuanLyCuaHangMayTinh._dsSanPham.timTheoMa(in.nextLine());
     _soLuong = Integer.parseInt(in.nextLine());
@@ -96,7 +96,7 @@ public class ChiTietHoaDon implements IConsoleIO, IConsoleEditable, IStreamIO {
       System.out.println("Lỗi!");
     }
     while (true) {
-      System.out.println("Nhập số lượng sản phẩm: ");
+      System.out.print("Nhập số lượng sản phẩm: ");
       String s = in.nextLine();
       if (s.isEmpty()) break;
       int soLuong;
